@@ -262,16 +262,16 @@ const grid = new THREE.GridHelper(30, 30, 0xcfd5dc, 0xd9dee3); grid.position.y =
 // ---------- Espacios (cm: x1, y1, x2, y2 — medidas libres) ----------
 const WOOD = 0xd9b98f, WOOD2 = 0xcfae84, TILE = 0xdfe3e6, TILE2 = 0xd3d9de;
 const rooms = [
-  { n: 'Sala Comedor', r: [10, 10, 304, 295], c: WOOD, note: 'Mueble gatero + TV sobre el muro junto a la cocina: torre 40×40×200, mesón a 72 cm, TV 55" a 92 cm, repisa para gatos a 2.00 m, arenero oculto y poste de sisal. Sofá J&D de 1.40 m mirando al TV que se convierte en comedor (tablero 1.40 × 0.68 sobre los brazos curvos) + 1 puff con almacenamiento. Se separa del estudio con un divisor de listones (hoja central fija y dos pasos de 0.95 m).' },
-  { n: 'Estudio', r: [319, 10, 494, 295], c: WOOD, note: 'Estudio para dos al fondo de la sala, detrás del divisor de listones: escritorio contra el muro oriente, península de 0.45 hasta la hoja fija del divisor con las torres en fila, monitores en brazo doble por persona, repisa de cubos y sillas ergonómicas.' },
+  { n: 'Sala Comedor', r: [10, 10, 304, 295], c: WOOD, note: 'Mueble gatero + TV sobre el muro junto a la cocina: torre gatera de piso a techo, mesón a 72 cm, TV 55" a 92 cm, pasarela de gatos a 1.70 m sobre el TV (31 cm libres) y gabinetes de 2.05 al techo con LED, arenero oculto y poste de sisal. Sofá J&D de 1.40 m mirando al TV que se convierte en comedor (tablero 1.40 × 0.68 sobre los brazos curvos) + 1 puff con almacenamiento. Se separa del estudio con un divisor de listones (hoja central fija y dos pasos de 0.95 m).' },
+  { n: 'Estudio', r: [319, 10, 494, 295], c: WOOD, note: 'Estudio para dos al fondo de la sala, detrás del divisor de listones: escritorio contra el muro oriente, península de 0.45 hasta la hoja fija del divisor con las torres en fila, monitores en brazo doble por persona, repisa de cubos con gabinetes hasta el techo y sillas ergonómicas. Escritorio a 75 cm y pantallas con el borde superior a la altura de los ojos (≈1.20 sentado).' },
   { n: 'Alcoba 2', r: [504, 10, 734, 295], c: WOOD2, note: 'Alcoba de huéspedes: mueble integrado en el muro oriente con cama semidoble abatible horizontal (1.20 × 1.90, colchón máx. 20 cm), escritorio de 1.88 × 0.40 que se queda nivelado, gabinetes altos con LED y torre de clóset de esquina 0.73 × 0.60 × 2.40.' },
   { n: 'Alcoba Principal', r: [590, 305, 850, 658], c: WOOD2, lx: 700, note: 'Cama doble 1.40 × 1.90 con la cabeza bajo la ventana para ver el cielo: cabecero de 0.95 m (más bajo que el alféizar) y cabecera lateral en L sobre el muro derecho; una mesa de noche junto a la puerta, que abre hacia la izquierda contra el muro de la ventana. Clóset de piso a techo y de muro a muro (2.47 × 0.60), corredizo de 3 hojas con maletero; su primer módulo es el bolsillo de la puerta corrediza del baño.' },
   { n: 'Hall', r: [142, 305, 580, 385], c: WOOD, lx: 250, wf: .62 },
-  { n: 'Cocina', r: [10, 381, 142, 658], c: TILE, lx: 150, ly: 470, note: 'Propuesta B: mesón en L con península (sin barra desayunadora). Nevera de 76 × 88.6 × 169.7 cm en nicho de 80 cm junto a la entrada.' },
-  { n: 'Baño Social', r: [245, 395, 450, 510], c: TILE2, note: 'Ducha a la izquierda, sanitario al centro y lavamanos a la derecha; puerta desde el hall que abre hacia adentro.' },
+  { n: 'Cocina', r: [10, 381, 142, 658], c: TILE, lx: 150, ly: 470, note: 'Propuesta B: mesón en L con península (sin barra desayunadora), a 92 cm de alto: lo recomendado para una persona de 1.70. Gabinetes altos de 35 de fondo desde 1.50 (58 cm sobre el mesón) hasta el techo, también sobre la esquina; campana integrada a 65 cm de los fogones. Nevera de 76 × 88.6 × 169.7 cm en nicho de 80 cm junto a la entrada, con gabinete encima hasta el techo.' },
+  { n: 'Baño Social', r: [245, 395, 450, 510], c: TILE2, note: 'Ducha a la izquierda, sanitario al centro y lavamanos a la derecha sobre mueble flotante con cajón y gabinete con espejo encima; puerta desde el hall que abre hacia adentro.' },
   { n: 'Nicho areneros', r: [460, 385, 580, 445], c: WOOD, lx: 535, ly: 425, wf: .3 , note: 'Mueble de areneros 120 × 50 × 61 con cojín acolchado encima (espacio de 42 cm para los gatos) y clóset de puertas lisas hasta el techo: toallas (0.72) y ropa de cama (0.60).' },
-  { n: 'Baño alcoba', r: [460, 453, 580, 658], c: TILE2, note: 'Baño privado de la alcoba principal: ducha al norte, lavamanos y sanitario contra el muro oeste; puerta corrediza con riel invisible que se guarda dentro del clóset.' },
-  { n: 'Ropas', r: [245, 520, 347, 658], c: TILE, note: 'Lavandería abierta a todo lo ancho (sin muritos): escobero alto 0.25 × 0.82, lavasecadora LG bajo el mesón frente al vano, lavadero con poceta bajo el calentador oculto en celosía, sin puerta (queda abierta al pasillo).' },
+  { n: 'Baño alcoba', r: [460, 453, 580, 658], c: TILE2, note: 'Baño privado de la alcoba principal: ducha al norte, lavamanos (mueble flotante con cajón y gabinete con espejo) y sanitario contra el muro oeste; puerta corrediza con riel invisible que se guarda dentro del clóset.' },
+  { n: 'Ropas', r: [245, 520, 347, 658], c: TILE, note: 'Lavandería abierta a todo lo ancho (sin muritos): escobero 0.25 × 0.82 hasta el techo, lavasecadora LG bajo el mesón frente al vano, lavadero con poceta bajo el calentador oculto en celosía, sin puerta (queda abierta al pasillo).' },
   { n: 'Ducto', r: [355, 520, 450, 658], c: 0xc4cad0, note: 'Ducto técnico / zona de servicio.' },
 ];
 rooms.forEach(rm => { const [x1, y1, x2, y2] = rm.r; rm.w = (x2 - x1) / 100; rm.h = (y2 - y1) / 100; rm.a = rm.w * rm.h; rm.d = `${rm.w.toFixed(2)} × ${rm.h.toFixed(2)}`; });
@@ -408,11 +408,17 @@ k(20, 508, 58, 568, 0.905, 0.922, km.sink); kc(14, 538, 1.5, 0.92, 1.18, km.stee
 // península (80 × 60) y barra (140 × 25) hacia la sala
 k(70, 321, 150, 381, 0.10, 0.88, km.cab); k(72, 323, 148, 381, 0, 0.10, km.plinth);
 k(68, 321, 152, 381, 0.88, 0.92, km.top);
-// gabinetes altos y campana
-k(10, 381, 45, 578, 1.50, 2.25, km.upper);
-k(10, 381, 55, 441, 1.35, 1.50, km.hood);
-// nicho de nevera 80 cm (578–658) con gabinete encima
-k(10, 578, 72, 658, 1.80, 2.35, km.upper);
+// gabinetes altos de 35 de fondo hasta el techo (sin espacio arriba), también sobre la esquina:
+// base a 1.50 = 58 cm sobre el mesón (norma 50–60); la fila baja (1.50–1.98) queda al alcance de una persona de 1.70,
+// la fila alta (2.00–2.40) es para lo de poco uso
+k(10, 321, 45, 381, 1.50, 2.40, km.upper); k(10, 441, 45, 578, 1.50, 2.40, km.upper);
+// sobre la estufa: campana integrada a 1.58 (65 cm sobre los fogones, norma 65–75 para gas) + gabinete hasta el techo
+k(10, 381, 45, 441, 1.72, 2.40, km.upper); k(10, 381, 50, 441, 1.58, 1.72, km.hood);
+for (const y of [381, 441, 509.5]) k(45, y - 0.3, 45.4, y + 0.3, 1.50, 2.40, km.seam);
+k(45, 321, 45.4, 381, 1.985, 1.995, km.seam); k(45, 441, 45.4, 578, 1.985, 1.995, km.seam); k(45, 381, 45.4, 441, 2.055, 2.065, km.seam);
+for (const y of [351, 475, 543]) k(45, y - 6, 46, y + 6, 1.53, 1.545, km.seam);   // tiradores abajo
+// nicho de nevera 80 cm (578–658): gabinete hasta el techo, a 4 cm de la nevera para ventilación
+k(10, 578, 72, 658, 1.76, 2.40, km.upper); k(72, 617.7, 72.4, 618.3, 1.76, 2.40, km.seam);
 // Nevera 76 × 88.6 × 169.7 cm (puertas francesas + cajón)
 const fx1 = 12, fx2 = 12 + 88.6, fy1 = 580, fy2 = 656;
 k(fx1, fy1, fx2, fy2, 0.02, 1.717, km.steel);
@@ -442,9 +448,11 @@ function gface(shape, x, cy, cz) {
   const m = new THREE.Mesh(new THREE.ShapeGeometry(shape, 24), gm.hole);
   m.scale.setScalar(0.01); m.rotation.y = Math.PI / 2; m.position.set(X(x), cz / 100, Z(cy)); cat.add(m); return m;
 }
-// 1 · Torre gatera 40×40×200 con 3 huecos Ø26
-g(10, 10, 50, 50, 0, 2.0, gm.wood);
-for (const z of [86, 128, 170]) {
+// 1 · Torre gatera 40×40 de piso a techo con 2 huecos Ø26 al frente y salida lateral a la pasarela
+g(10, 10, 50, 50, 0, 2.40, gm.wood);
+g(15, 50, 35, 50.3, 1.76, 1.98, gm.hole);                         // salida hacia la pasarela de los gatos
+g(50, 12, 50.4, 48, 2.045, 2.055, gm.woodD);                      // puerta de guardado arriba (2.05–2.40)
+for (const z of [86, 128]) {
   const c = new THREE.Shape(); c.absarc(0, 0, 13, 0, Math.PI * 2, false); gface(c, 50.3, 30, z);
   g(50, 14, 52, 46, (z - 21) / 100, (z - 19) / 100, gm.woodD);
 }
@@ -462,13 +470,15 @@ g(10, 195, 55, 250, 0.06, 0.68, gm.white);
 { const a = new THREE.Shape(); a.moveTo(-16, -18); a.lineTo(16, -18); a.lineTo(16, 0); a.absarc(0, 0, 16, 0, Math.PI, false); a.lineTo(-16, -18);
   gface(a, 55.3, 222, 28); }
 // 6 · Panel TV y 7 · TV 55"
-g(10, 60, 12, 200, 0.80, 2.00, gm.panel);
+g(10, 60, 12, 200, 0.80, 1.70, gm.panel);
 g(12, 69, 17, 191, 0.92, 1.63, gm.tv);
-// 8 · Repisa superior 30 de fondo a 2.00 m, con LED
-g(10, 10, 40, 260, 2.00, 2.04, gm.wood); gcyl(25, 260, 15, 2.00, 2.04, gm.wood);
-g(36, 12, 38, 258, 1.993, 2.0, gm.led);
+// 8 · Pasarela de gatos 30 de fondo a 1.70 (sobre el TV) con 31 cm libres, y gabinetes de 2.05 al techo con LED abajo
+g(10, 50, 40, 260, 1.70, 1.74, gm.wood); gcyl(25, 260, 15, 1.70, 1.74, gm.wood);
+g(10, 50, 40, 250, 2.05, 2.40, gm.white);
+for (const y of [100, 150, 200]) g(40, y - 0.3, 40.4, y + 0.3, 2.06, 2.39, gm.handle);
+g(36, 52, 38, 248, 2.043, 2.05, gm.led);
 // 9 · Poste de sisal Ø12
-gcyl(36, 242, 6, 0.72, 2.0, gm.sisal);
+gcyl(36, 242, 6, 0.72, 1.70, gm.sisal);
 // 10–11 · Escalones de pared
 for (const z of [1.12, 1.52]) { g(10, 203, 35, 233, z, z + 0.03, gm.wood); g(12, 205, 33, 231, z + 0.03, z + 0.036, gm.felt); }
 
@@ -500,6 +510,10 @@ sb(327, 151.5, 372, 174.5, 4, 52, sm.tower); sb(330, 174.5, 369, 174.9, 8, 48, s
 sb(464, 40, 494, 295, 165, 167, sm.cab); sb(464, 40, 494, 295, 213, 215, sm.cab); sb(492, 40, 494, 295, 167, 213, sm.cab);
 for (const y of [40, 92, 144, 196, 248, 293]) sb(464, y, 494, y + 2, 165, 215, sm.cab);
 sb(466, 42, 469, 293, 164.4, 165, sm.led);
+// gabinetes superiores de pared a pared hasta el techo (sobre la ventana: la ventana llega a 2.10)
+sb(464, 10, 494, 295, 215, 240, sm.cab);
+for (let y = 10 + 285 / 6; y < 294; y += 285 / 6) sb(463.6, y - 0.4, 464, y + 0.4, 216, 239, sm.slot);
+for (let y = 10 + 285 / 12; y < 295; y += 285 / 6) sb(462.8, y - 4, 463.6, y + 4, 217, 219, SM(0x9aa3ab));
 // Pantallas 27" + 22" por persona en un brazo doble (22" a la izquierda, girado 15°)
 function monitors(y27a, y27b, y22a, y22b, hingeY, poleY) {
   sb(466, y27a, 469, y27b, 92, 128, sm.mon);
@@ -614,7 +628,7 @@ for (let z = 98; z <= 110; z += 7.5) lw(346.6, 520, 347, 658, z, z + 0.35, LW.ti
 lw(271, 614, 347, 658, 0, 8, LW.plinth); lw(267, 614, 347, 658, 8, 94, LW.cab);
 lw(265.5, 618, 266.6, 619, 76, 90, LW.black);
 // escobero alto 0.25 × 0.82 × 2.15 (escoba, recogedor, trapero)
-lw(267, 520, 347, 545, 0, 215, LW.cab); lw(265.5, 540, 266.6, 541, 95, 125, LW.black);
+lw(267, 520, 347, 545, 0, 215, LW.cab); lw(267, 520, 307, 545, 215, 240, LW.cab);   // hasta el techo (detrás queda el descolgado) lw(265.5, 540, 266.6, 541, 95, 125, LW.black);
 // lavasecadora LG 65 × 78 × 95 bajo el mesón
 lw(269, 547, 347, 612, 0, 94, LW.wm);   // lavasecadora a la izquierda, completa frente al vano
 { const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.21, 0.02, 32), LW.wmDoor); ring.rotation.z = Math.PI / 2; ring.position.set(X(268.4), 0.45, Z(579.5)); laundry.add(ring);
@@ -669,9 +683,7 @@ const p2Sofa = new THREE.Group(), p2Table = new THREE.Group(), p2Puff = new THRE
 { const CB = SM(0x3f4b5c), CBd = SM(0x2f3947), H = SM(0x9aa3ab);
   q(704, 10, 734, 40, 165, 167, CB); q(704, 10, 734, 40, 213, 215, CB); q(732, 10, 734, 40, 167, 213, CB); q(704, 10, 734, 12, 165, 215, CB);   // cubo extra junto a la fachada
   q(706, 12, 709, 42, 164.4, 165, P2M.led);
-  q(704, 10, 734, 295, 215, 240, CB);                                           // gabinetes superiores de pared a pared hasta el techo
-  for (let y = 10 + 285 / 6; y < 294; y += 285 / 6) q(703.6, y - 0.4, 704, y + 0.4, 216, 239, CBd);
-  for (let y = 10 + 285 / 12; y < 295; y += 285 / 6) q(702.8, y - 4, 703.6, y + 4, 217, 219, H); }
+  /* los gabinetes superiores hasta el techo vienen de la copia del estudio */ }
 
 // ---------- Baños ----------
 const baths = new THREE.Group(); scene.add(baths);
@@ -688,9 +700,13 @@ function toilet(x1, y1, x2, y2, back) {   // back: 'S' tanque al sur, 'N' tanque
 function sink(x1, y1, x2, y2, wall) {
   bb(x1, y1, x2, y2, 80, 88, BM.white);
   const cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
-  bb(cx - 5, cy - 5, cx + 5, cy + 5, 0, 80, BM.white);   // pedestal
-  if (wall === 'S') { bb(cx - 1.5, y2 - 6, cx + 1.5, y2 - 2, 88, 102, BM.chrome); bb(x1 + 2, y2 - 1, x2 - 2, y2, 110, 170, BM.mirror); }
-  if (wall === 'W') { bb(x1 + 2, cy - 1.5, x1 + 6, cy + 1.5, 88, 102, BM.chrome); bb(x1, y1 + 2, x1 + 1, y2 - 2, 110, 170, BM.mirror); }
+  bb(x1, y1, x2, y2, 40, 80, BM.vanity);                 // mueble flotante con cajón (deja el piso libre para limpiar)
+  if (wall === 'S') { bb(x1, y1 - 0.4, x2, y1, 41, 79, BM.vanity); bb(cx - 6, y1 - 1.2, cx + 6, y1 - 0.4, 72, 73.5, BM.chrome);
+    bb(cx - 1.5, y2 - 6, cx + 1.5, y2 - 2, 88, 102, BM.chrome);
+    bb(x1 + 2, y2 - 12, x2 - 2, y2, 110, 180, BM.vanity); bb(x1 + 2, y2 - 12.5, x2 - 2, y2 - 12, 111, 179, BM.mirror); }   // gabinete con espejo, 12 de fondo
+  if (wall === 'W') { bb(x2, y1, x2 + 0.4, y2, 41, 79, BM.vanity); bb(x2 + 0.4, cy - 6, x2 + 1.2, cy + 6, 72, 73.5, BM.chrome);
+    bb(x1 + 2, cy - 1.5, x1 + 6, cy + 1.5, 88, 102, BM.chrome);
+    bb(x1, y1 + 2, x1 + 12, y2 - 2, 110, 180, BM.vanity); bb(x1 + 12, y1 + 2, x1 + 12.5, y2 - 2, 111, 179, BM.mirror); }
 }
 // Baño social (2.05 × 1.15), como en el plano: ducha a la izquierda, sanitario al centro y lavamanos a la derecha contra el muro sur
 bb(249, 399, 333, 506, 0, 4, BM.tray); bb(333, 440, 335, 506, 4, 200, BM.glass);
@@ -922,7 +938,7 @@ cota(105, 578, 105, 658, '0.80 nicho nevera', 'in', .5, 1.75);
 cota(102, 441, 102, 498, '0.57 mesón', 'in', .5, 0.95);
 const gc0 = cotas.length;
 cota(62, 50, 62, 250, '2.00 mesón', 'in', .5, 0.72);
-cota(48, 10, 48, 275, '2.65 repisa', 'in', .62, 2.06);
+cota(48, 50, 48, 275, '2.25 pasarela gatos', 'in', .62, 1.76);
 cota(56, 10, 56, 50, '0.40 torre', 'in', .5, 0.05);
 cota(10, 262, 55, 262, '0.45', 'in', .5, 0.72);
 cota(62, 250, 62, 296, '0.46 libre', 'in', .5, 0.05);
