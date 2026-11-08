@@ -149,7 +149,7 @@
   <h1>Apartamento · Plano 3D</h1>
   <div class="sub">2 alcobas · 2 baños · estudio · cotas en metros</div>
   <div class="areas"><div><b>52.80 m²</b>Área total</div><div><b>48.35 m²</b>Área construida privada</div></div>
-  <div id="props" style="display:flex;gap:4px;margin-top:10px;background:#eef1f4;border-radius:10px;padding:3px"><button data-p="1" class="on" aria-label="Propuesta 1"><span class="lng">Propuesta </span><span class="sht">P</span>1</button><button data-p="2" aria-label="Propuesta 2"><span class="lng">Propuesta </span><span class="sht">P</span>2</button></div>
+  <div id="props" style="display:flex;gap:4px;margin-top:10px;background:#eef1f4;border-radius:10px;padding:3px"><button data-p="2" class="on" aria-label="Propuesta 1"><span class="lng">Propuesta </span><span class="sht">P</span>1</button><button data-p="1" aria-label="Propuesta 2"><span class="lng">Propuesta </span><span class="sht">P</span>2</button></div>
   <button id="galBtn" aria-label="Galería de diseños"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg><span class="lng"> Galería de diseños</span></button>
 </div>
 <div id="gal"><div id="galBox"><button class="gx" aria-label="Cerrar">×</button><h2>Galería de diseños</h2><div class="s">Láminas finales de cada espacio, con medidas. Toca una para verla en grande.</div><div class="ggrid" id="ggrid"></div></div></div>
@@ -1078,9 +1078,9 @@ function setProp(n) {
   p2.visible = n === 2;
   cotas.forEach(c => { if (c.only) c.ln.visible = c.only === n && !c.hide; });
   const a2 = rooms.find(r => r.base === WOOD2 && r.r[0] === 504), sl = rooms.find(r => r.r[0] === 10 && r.r[1] === 10), es = rooms.find(r => r.r[0] === 319);
-  if (n === 2) { a2.n = 'Estudio'; a2.note = 'Propuesta 2: estudio para dos en este cuarto, sin clóset. El mismo estudio de la propuesta 1: escritorio 2.85 × 0.65 contra el muro oriente, península 1.08 × 0.45 con las torres en fila, 27" + 22" en brazo doble por persona, repisa de cubos con LED de pared a pared y gabinetes superiores hasta el techo, y sillas ergonómicas.';
-    sl.note = 'Propuesta 2: sofá J&D convertible en versión grande (2.00 × 0.95, 3 puestos) mirando al TV, con puff; en modo comedor el panel se vuelve una mesa de 2.00 × 0.72. Se separa de la alcoba 2 con 3 hojas de listones telescópicas.';
-    es.n = 'Alcoba 2'; es.note = 'Propuesta 2: alcoba de huéspedes al fondo de la sala, con cama semidoble abatible horizontal con escritorio de 1.88, gabinetes altos, repisas abiertas y repisa de gatos en L bajo la ventana. Se cierra hacia la sala con 3 hojas de listones telescópicas y hacia el pasillo con muro (espejo de cuerpo entero del lado del pasillo).'; }
+  if (n === 2) { a2.n = 'Estudio'; a2.note = 'Propuesta 1: estudio para dos en este cuarto, sin clóset. El mismo estudio de la propuesta 2: escritorio 2.85 × 0.65 contra el muro oriente, península 1.08 × 0.45 con las torres en fila, 27" + 22" en brazo doble por persona, repisa de cubos con LED de pared a pared y gabinetes superiores hasta el techo, y sillas ergonómicas.';
+    sl.note = 'Propuesta 1: sofá J&D convertible en versión grande (2.00 × 0.95, 3 puestos) mirando al TV, con puff; en modo comedor el panel se vuelve una mesa de 2.00 × 0.72. Se separa de la alcoba 2 con 3 hojas de listones telescópicas.';
+    es.n = 'Alcoba 2'; es.note = 'Propuesta 1: alcoba de huéspedes al fondo de la sala, con cama semidoble abatible horizontal con escritorio de 1.88, gabinetes altos, repisas abiertas y repisa de gatos en L bajo la ventana. Se cierra hacia la sala con 3 hojas de listones telescópicas y hacia el pasillo con muro (espejo de cuerpo entero del lado del pasillo).'; }
   else { a2.n = 'Alcoba 2'; a2.note = a2.note1; sl.note = sl.note1; es.n = 'Estudio'; es.note = es.note1; }
   for (const r of [a2, es]) { r.el.innerHTML = `${r.n}<small>${r.a.toFixed(2)} m²</small>`; r.row.childNodes[1].textContent = r.n; } sl.el.innerHTML = `${sl.n}<small>${sl.a.toFixed(2)} m²</small>`;
   if (sel >= 0) select(sel, false);
@@ -1170,6 +1170,8 @@ loop();
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);
 });
+// la propuesta 1 (interna 2) es la vista inicial
+setProp(2);
 </script>
 
 <script>
@@ -1192,7 +1194,7 @@ addEventListener('resize', () => {
   let cur = 0, L = G;
   const prop = () => +(document.querySelector('#props button.on')?.dataset.p || 1);
   function render() { const p = prop(); L = G.filter(g => !g[3] || g[3] === p); grid.innerHTML = '';
-    gal.querySelector('h2').textContent = `Galería de diseños · Propuesta ${p}`;
+    gal.querySelector('h2').textContent = `Galería de diseños · Propuesta ${3 - p}`;
     L.forEach(([src, t, d], i) => { const c = document.createElement('div'); c.className = 'gcard';
       c.innerHTML = `<img src="${src}" alt="${t}" loading="lazy"><div class="t">${t}<small>${d}</small></div>`; c.onclick = () => open(i); grid.appendChild(c); }); }
   function open(i) { cur = (i + L.length) % L.length; vimg.src = L[cur][0]; vcap.textContent = `${L[cur][1]} · ${L[cur][2]}`; view.classList.add('on'); }
@@ -1255,7 +1257,7 @@ addEventListener('resize', () => {
         ? `<div class="grp"><div class="gt">Estudio</div>${seg('div','Cerrado','Abierto','Divisor de listones')}</div>
            <div class="grp"><div class="gt">Alcoba 2</div>${seg('bed','Escritorio','Cama','Mueble abatible')}</div>`
         : `<div class="grp"><div class="gt">Alcoba 2</div>${seg('bed','Escritorio','Cama','Mueble abatible')}${seg('rc','Abiertos','Cerrados','Listones')}</div>`) +
-      `<div class="hint">Propuesta ${p} · los controles cambian según la propuesta.</div>`;
+      `<div class="hint">Propuesta ${3 - p} · los controles cambian según la propuesta.</div>`;
     sync();
   }
   function sync() { document.querySelectorAll('#paneMover .seg').forEach(g => { const on = st[g.dataset.k]() ? '1' : '0'; g.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === on)); }); }
