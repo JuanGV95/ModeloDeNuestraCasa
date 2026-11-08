@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Plano 3D interactivo · Apartamento 52.80 m²</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -91,15 +91,48 @@
   #toast.warn{display:block;background:#fff4ec;color:#7a3a12;border:1px solid #f1c4a8}
   #toast.ok{display:block;background:#eefaf3;color:#1f5f43;border:1px solid #bfe5cf}
   #loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px}
+  .sht,.ico,.hdl{display:none}
+  #info .more{display:none}
   @media (max-width:760px){
-    #side{top:auto;bottom:14px;right:14px;left:14px;width:auto;max-height:34%}
-    #top{max-width:none;right:14px;padding:10px 12px}#top .areas{display:none}
-    #modes{top:auto;bottom:calc(34% + 26px)}
-    #help{display:none}#info{bottom:calc(34% + 80px)}
-    .cota{position:absolute;transform:translate(-50%,-50%);font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums;
-        padding:1px 5px;border-radius:5px;white-space:nowrap;background:#fff;color:#c4561f;border:1px solid #f1c4a8}
-  .cota.out{color:#1c2f45;border-color:#c9d2dc}
-  #pad{bottom:calc(34% + 80px)}
+    /* barra superior en una sola fila: propuesta · modo de vista · galería */
+    #top{top:calc(8px + env(safe-area-inset-top));left:8px;right:8px;max-width:none;padding:5px;display:flex;align-items:center;gap:5px;border-radius:14px}
+    #top h1,#top .sub,#top .areas{display:none}
+    #props{margin:0 !important;flex:none}
+    #props button{flex:none;padding:8px 11px}
+    .lng{display:none}.sht{display:inline}
+    #top #modes{position:static;transform:none;box-shadow:none;background:#eef1f4;padding:3px;gap:2px;flex:1;min-width:0;display:flex;border-radius:10px;backdrop-filter:none}
+    #modes button{flex:1;padding:7px 2px;font-size:12px;border-radius:8px;min-width:0}
+    #galBtn{margin:0;width:40px;height:36px;padding:0;flex:none;font-size:16px}
+    /* panel inferior: barra de pestañas siempre visible + hoja que se despliega */
+    #side{top:auto;left:0;right:0;bottom:0;width:auto;max-height:none;overflow:visible;border-radius:18px 18px 0 0;padding:4px 10px calc(6px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
+    .hdl{display:block;order:1;width:100%;height:18px;border:0;background:none;padding:0;cursor:pointer;flex:none}
+    .hdl::before{content:'';display:block;width:38px;height:4px;border-radius:2px;background:#cdd4dc;margin:6px auto}
+    #side .pane{order:2;max-height:46vh;overflow:auto;padding:2px 2px 8px;-webkit-overflow-scrolling:touch}
+    #side:not(.open) .pane{display:none}
+    #side .tabs{order:3;position:static;margin:0;background:none;padding:0;gap:4px}
+    #side.open .tabs{border-top:1px solid #e9edf1;padding-top:4px}
+    .tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;font-size:11px;border-radius:10px}
+    .tabs .ico{display:block;width:20px;height:20px}
+    .tabs button.on{box-shadow:none;background:#eef1f4}
+    #side:not(.open) .tabs button.on{background:none;color:var(--muted)}
+    .it{margin:9px 2px}.seg button{padding:7px 11px;font-size:12px}
+    .chip span{padding:7px 12px;font-size:12px}
+    .room{padding:10px 8px}
+    /* ficha del espacio: compacta sobre la barra, se expande al tocar */
+    #info{left:8px;right:8px;min-width:0;bottom:calc(74px + env(safe-area-inset-bottom));padding:10px 38px 10px 14px;max-height:42vh;overflow:auto}
+    #info .n{font-size:14px}
+    #info:not(.full) .m{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    #info .more{display:inline-block;border:0;background:none;padding:4px 0 0;font:600 12px Inter,sans-serif;color:var(--accent);cursor:pointer}
+    body.sheet #info,body.sheet #pad,body.sheet #heights{display:none !important}
+    #help{display:none}
+    #heights{top:calc(62px + env(safe-area-inset-top)) !important}
+    #toast{top:calc(62px + env(safe-area-inset-top));font-size:12px}
+    #pad{right:12px;bottom:calc(84px + env(safe-area-inset-bottom));grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,52px)}
+    .lbl{font-size:10.5px;padding:2px 6px;border-radius:6px}.lbl small{font-size:9px}
+    .cota{font-size:9.5px;padding:0 4px}
+    #galBox{padding:16px 14px;width:96vw;max-height:92vh}.ggrid{grid-template-columns:1fr 1fr;gap:10px}
+    .gcard .t{font-size:12px;padding:7px 8px}
+    #view .nav button{padding:10px 14px}
   }
 </style>
 <script type="importmap">
@@ -116,20 +149,20 @@
   <h1>Apartamento · Plano 3D</h1>
   <div class="sub">2 alcobas · 2 baños · estudio · cotas en metros</div>
   <div class="areas"><div><b>52.80 m²</b>Área total</div><div><b>48.35 m²</b>Área construida privada</div></div>
-  <div id="props" style="display:flex;gap:4px;margin-top:10px;background:#eef1f4;border-radius:10px;padding:3px"><button data-p="1" class="on">Propuesta 1</button><button data-p="2">Propuesta 2</button></div>
-  <button id="galBtn">🖼 Galería de diseños</button>
+  <div id="props" style="display:flex;gap:4px;margin-top:10px;background:#eef1f4;border-radius:10px;padding:3px"><button data-p="1" class="on" aria-label="Propuesta 1"><span class="lng">Propuesta </span><span class="sht">P</span>1</button><button data-p="2" aria-label="Propuesta 2"><span class="lng">Propuesta </span><span class="sht">P</span>2</button></div>
+  <button id="galBtn" aria-label="Galería de diseños"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/></svg><span class="lng"> Galería de diseños</span></button>
 </div>
 <div id="gal"><div id="galBox"><button class="gx" aria-label="Cerrar">×</button><h2>Galería de diseños</h2><div class="s">Láminas finales de cada espacio, con medidas. Toca una para verla en grande.</div><div class="ggrid" id="ggrid"></div></div></div>
 <div id="view"><div class="cap2" id="vcap"></div><img id="vimg" alt=""><div class="nav"><button id="vprev">◀ Anterior</button><button id="vclose">Cerrar</button><button id="vnext">Siguiente ▶</button></div></div>
 
 <div id="modes" class="panel">
-  <button data-m="orbit" class="on">Vista 3D</button>
+  <button data-m="orbit" class="on"><span class="lng">Vista </span>3D</button>
   <button data-m="top">Planta</button>
   <button data-m="walk">Recorrido</button>
 </div>
 
 <div id="side" class="panel">
-  <div class="tabs" role="tablist"><button data-t="mover" class="on">Interactuar</button><button data-t="ver">Mostrar</button><button data-t="esp">Espacios</button></div>
+  <button class="hdl" aria-label="Abrir o cerrar el panel"></button><div class="tabs" role="tablist"><button data-t="mover" class="on"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Interactuar</button><button data-t="ver"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Mostrar</button><button data-t="esp"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 11h9M12 3v18M12 15h9"/></svg>Espacios</button></div>
   <div class="pane" data-p="mover" id="paneMover"></div>
   <div class="pane" data-p="ver" hidden>
     <div class="grp"><div class="gt">Muebles visibles</div><div class="chips" id="chipsVer"></div></div>
@@ -159,7 +192,7 @@
   </div>
 </div>
 
-<div id="info" class="panel"><button class="x" aria-label="Cerrar">×</button><div class="n"></div><div class="m"></div></div>
+<div id="info" class="panel"><button class="x" aria-label="Cerrar">×</button><div class="n"></div><div class="m"></div><button class="more">Ver más</button></div>
 <div id="help" class="panel">Arrastra para girar · Rueda o pellizco para zoom · Clic derecho para desplazar · Toca un espacio para ver sus datos</div>
 <div id="heights" class="panel" style="top:64px;left:50%;transform:translateX(-50%);display:none;padding:4px;gap:2px"><button data-h="1.48">Persona 1.48 m</button><button data-h="1.74" class="on">Persona 1.74 m</button></div>
 <div id="pad"><button class="u" data-k="f">▲</button><button data-k="l">◀</button><button data-k="b">▼</button><button data-k="r">▶</button></div>
@@ -186,7 +219,9 @@ app.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xeef1f4);
 const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.05, 200);
-camera.position.set(5.5, 9.5, 9);
+// en pantallas verticales (celular) la cámara se aleja para que quepa todo el apartamento a lo ancho
+const fitK = () => Math.max(1, Math.min(2.1, 0.9 * innerHeight / innerWidth));
+camera.position.set(5.5, 9.5, 9).multiplyScalar(fitK());
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.maxPolarAngle = Math.PI / 2.05;
@@ -986,10 +1021,10 @@ function setMode(m) {
     camera.rotation.order = 'XYZ';
     if (m === 'top') {
       controls.enableRotate = false;
-      tween(controls.target.clone(), new THREE.Vector3(0, 0, 0), camera.position.clone(), new THREE.Vector3(0, 13, 0.001));
+      tween(controls.target.clone(), new THREE.Vector3(0, 0, 0), camera.position.clone(), new THREE.Vector3(0, 13 * fitK(), 0.001));
     } else {
       controls.enableRotate = true;
-      tween(controls.target.clone(), new THREE.Vector3(0, 0, 0), camera.position.clone(), new THREE.Vector3(5.5, 9.5, 9));
+      tween(controls.target.clone(), new THREE.Vector3(0, 0, 0), camera.position.clone(), new THREE.Vector3(5.5, 9.5, 9).multiplyScalar(fitK()));
     }
   }
 }
@@ -1181,7 +1216,26 @@ addEventListener('resize', () => {
   const $ = id => document.getElementById(id);
   const prop = () => +(document.querySelector('#props button.on')?.dataset.p || 1);
   // tabs
+  // móvil: barra superior en una fila y hoja inferior desplegable
+  const mq = matchMedia('(max-width:760px)'), side = $('side');
+  const sheet = open => { side.classList.toggle('open', open); document.body.classList.toggle('sheet', open); };
+  function layout() { const m = mq.matches, modes = $('modes');
+    if (m && modes.parentNode !== $('top')) $('top').insertBefore(modes, $('galBtn'));
+    if (!m && modes.parentNode === $('top')) document.body.insertBefore(modes, side);
+    if (!m) sheet(false); }
+  mq.addEventListener('change', layout); layout();
+  $('list').addEventListener('click', () => { if (mq.matches) sheet(false); });
+  document.querySelector('.hdl').onclick = () => sheet(!side.classList.contains('open'));
+  $('app').addEventListener('pointerdown', () => { if (mq.matches) sheet(false); });
+  let y0 = null;
+  side.addEventListener('touchstart', e => { y0 = e.target.closest('.pane') ? null : e.touches[0].clientY; }, { passive: true });
+  side.addEventListener('touchend', e => { if (y0 === null) return; const dy = e.changedTouches[0].clientY - y0; y0 = null;
+    if (dy > 40) sheet(false); else if (dy < -40) sheet(true); });
+  const info = $('info');
+  info.querySelector('.more').onclick = () => { const f = info.classList.toggle('full'); info.querySelector('.more').textContent = f ? 'Ver menos' : 'Ver más'; };
+  info.querySelector('.x').addEventListener('click', () => { info.classList.remove('full'); info.querySelector('.more').textContent = 'Ver más'; });
   document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+    if (mq.matches) { if (b.classList.contains('on') && side.classList.contains('open')) return sheet(false); sheet(true); }
     document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
     document.querySelectorAll('#side .pane').forEach(p => p.hidden = p.dataset.p !== b.dataset.t);
   });
