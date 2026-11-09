@@ -266,7 +266,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.maxPolarAngle = Math.PI / 2.05;
 controls.minDistance = 2; controls.maxDistance = 30;
-window.__dbg = { camera, controls };
+window.__dbg = { camera, controls, scene };
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0xb8c2cc, 1.1));
 const sun = new THREE.DirectionalLight(0xffffff, 1.6);
@@ -825,7 +825,7 @@ ra(689, 10, 734, 13, 0, 140, AM.oak); ra(689, 217, 734, 220, 0, 140, AM.oak); ra
 ra(689, 10, 734, 220, 140, 145, AM.oak); ra(689, 10, 734, 220, 145, 240, AM.white); ra(692, 13, 731, 217, 139.4, 140, AM.led);
 for (const y of [80, 150]) ra(688.6, y - 0.4, 689, y + 0.4, 146, 239, AM.seam);
 // torre de clóset de esquina 0.73 × 0.60 × 2.40 (puerta hacia el cuarto)
-ra(674, 222, 734, 295, 0, 240, AM.white); ra(672.8, 226, 674, 227.2, 100, 130, AM.black);
+ra(674, 222, 734, 295, 0, 240, AM.white); ra(672.8, 226, 674, 227.2, 100, 130, RM.handle);
 // cerrada: frente de la cama + escritorio 1.88 × 0.40 + portátil + silla sencilla
 mc(691, 13, 731, 217, 4, 135, AM.oakL); mc(690.6, 17, 691, 213, 120, 122, SM(0x9b6f4a));
 mc(649, 21, 691, 209, 72, 75, AM.oak); mc(684, 21, 691, 209, 62, 72, AM.oak);
@@ -1235,7 +1235,7 @@ function setProp(n) {
   alc2.visible = n === 1 && document.getElementById('roomChk').checked;
   p2.visible = n === 2;
   cotas.forEach(c => { if (c.only) c.ln.visible = c.only === n && !c.hide; });
-  const a2 = rooms.find(r => r.base === WOOD2 && r.r[0] === 504), sl = rooms.find(r => r.r[0] === 10 && r.r[1] === 10), es = rooms.find(r => r.r[0] === 319);
+  const a2 = rooms.find(r => r.r[0] === 504 && r.r[1] === 10), sl = rooms.find(r => r.r[0] === 10 && r.r[1] === 10), es = rooms.find(r => r.r[0] === 319);
   if (n === 2) { a2.n = 'Estudio'; a2.note = 'Estudio para dos, sin clóset: escritorio 2.85 × 0.65 contra el muro oriente, península 1.08 × 0.45 con las torres en fila, 27" + 22" en brazo doble por persona, mueble alto de 1.60 al techo en 3 módulos iguales de 95 (3 nichos abiertos de 93 × 31 con LED debajo y 3 gabinetes de puerta abatible hacia arriba, sin tiradores), y sillas ergonómicas.';
     sl.note = sl.note1.replace(/ Sofá J&D de 1\.40.*$/, '') + ' Sofá J&D convertible de 2.00 × 0.95 (3 puestos) mirando al TV; en modo comedor el panel se vuelve una mesa de 2.00 × 0.72. Puff rectangular de 0.80 × 0.45: en modo sala va en la esquina junto a la cocina (o frente al sofá cuando está el árbol) y en modo comedor pasa a la mesa. Se separa de la alcoba 2 con 3 hojas de listones telescópicas.';
     es.n = 'Alcoba 2'; es.note = 'Alcoba de huéspedes al fondo de la sala, con cama semidoble abatible horizontal con escritorio de 1.88, gabinetes altos, repisas abiertas. Se cierra hacia la sala con 3 hojas de listones telescópicas y hacia el pasillo con muro (espejo de cuerpo entero del lado del pasillo).'; }
@@ -1338,14 +1338,14 @@ addEventListener('resize', () => {
   const CATS = [
     { id: 'madera', sec: 'Muebles', n: 'Madera', d: 'Gatero, mesones, cabeceros, estudio', def: 0xc9a27a,
       sw: [SW('Roble natural', 0xc9a27a), SW('Roble claro', 0xdcc3a0), SW('Fresno blanqueado', 0xe6d8c3), SW('Nogal', 0x7a4e2d), SW('Wengué', 0x4a3426), SW('Ceniza', 0xa39a8f)],
-      hex: [0xd8b07a, 0xc49a63, 0xa8754a, 0xb08560, 0xc9a27a, 0xd8b991, 0x9b6f4a, 0x7a4a2e, 0x6a3f27, 0x7a4e2d, 0x6a4226] },
+      mats: [lm.panel], hex: [0xd8b07a, 0xc49a63, 0xa8754a, 0xb08560, 0xc9a27a, 0xd8b991, 0x9b6f4a, 0x7a4a2e, 0x6a3f27, 0x7a4e2d, 0x6a4226] },
     { id: 'frentes', sec: 'Muebles', n: 'Gabinetes y frentes', d: 'Cocina, clósets, alacenas y estudio', def: 0xf2efe9,
       sw: [SW('Blanco hueso', 0xf2efe9), SW('Blanco puro', 0xf8f8f6), SW('Greige', 0xd9d2c5), SW('Salvia', 0x9cae98), SW('Azul noche', 0x2f3e52), SW('Grafito', 0x45484d)],
-      hex: [0xf4f1ea, 0xefe9df, 0xf4f2ee, 0xf2efe9, 0xe4dfd6, 0xf4f3f0, 0xd9d3c8, 0xc9c2b6], mats: [km.cab, km.upper, gm.white, RM.closet, RM.seam, AM.white, AM.seam, NM.cab, NM.cabD, LW.cab] },
+      hex: [0xf4f1ea, 0xefe9df, 0xf4f2ee, 0xf2efe9, 0xe4dfd6, 0xf4f3f0, 0xd9d3c8, 0xc9c2b6], keep: [0xd9d3c8, 0xc9c2b6], mats: [km.cab, km.upper, gm.white, RM.closet, RM.seam, AM.white, AM.seam, NM.cab, NM.cabD, LW.cab] },
     { id: 'meson', sec: 'Muebles', n: 'Mesón (granito)', d: 'Cocina, península y lavandería', def: 0x3a3f45, flat: 1,
       sw: [SW('Grafito', 0x3a3f45), SW('Negro', 0x1f2124), SW('Cuarzo blanco', 0xebe8e2), SW('Mármol gris', 0xc9c9c6), SW('Concreto', 0x8b8680), SW('Madera', 0xb08560)], mats: [km.top] },
     { id: 'tiradores', sec: 'Muebles', n: 'Tiradores', d: 'Manijas y perfiles', def: 0x9aa3ab, flat: 1,
-      sw: [SW('Acero', 0x9aa3ab), SW('Negro mate', 0x2b2f33), SW('Dorado', 0xc8a45c), SW('Cobre', 0xb87351), SW('Blanco', 0xf2f2f2), SW('Grafito', 0x3a3f45)], mats: [gm.handle, RM.handle, NM.handle, km.pull], hex: [0x9aa3ab] },
+      sw: [SW('Acero', 0x9aa3ab), SW('Negro mate', 0x2b2f33), SW('Dorado', 0xc8a45c), SW('Cobre', 0xb87351), SW('Blanco', 0xf2f2f2), SW('Grafito', 0x3a3f45)], mats: [gm.handle, RM.handle, NM.handle, km.pull, DM.knob], hex: [0x9aa3ab] },
     { id: 'piso', sec: 'Superficies', n: 'Piso laminado', d: 'Todo menos los baños', def: WOOD,
       sw: [SW('Roble miel', WOOD), SW('Roble claro', 0xe3cfae), SW('Natural', 0xc4a27a), SW('Nogal', 0x9a7351), SW('Roble gris', 0xb3aba0), SW('Porcelanato arena', 0xddd3c4)],
       hex: [WOOD, WOOD2, 0xd6bd96] },
@@ -1357,7 +1357,7 @@ addEventListener('resize', () => {
       sw: [SW('Blanco', 0xf7f7f5), SW('Hueso', 0xefe9df), SW('Arena', 0xe6dccb), SW('Gris niebla', 0xdfe2e4), SW('Salvia', 0xc8d1c2), SW('Terracota suave', 0xe2b9a1)], mats: [wallMat] },
     { id: 'puertas', sec: 'Superficies', n: 'Puertas', d: 'Hojas y marcos interiores', def: 0xf4f2ee,
       sw: [SW('Blanco', 0xf4f2ee), SW('Hueso', 0xece5d8), SW('Roble', 0xc9a27a), SW('Gris claro', 0xd5d8dc), SW('Negro', 0x2b2f33), SW('Azul noche', 0x2f3e52)], mats: [DM.leaf, slideDoor.material, doorFrameMat] },
-    { id: 'sofa', sec: 'Textiles', n: 'Sofá y puff', d: 'Tapizado', def: 0x7f8f98,
+    { id: 'sofa', sec: 'Textiles', n: 'Sofá y puff', d: 'Tapizado', def: 0x7f8f98, keepAll: 1,
       sw: [SW('Gris azulado', 0x7f8f98), SW('Gris claro', 0xb9bcbd), SW('Beige', 0xd2c6b2), SW('Oliva', 0x7d8460), SW('Terracota', 0xb4694a), SW('Petróleo', 0x2f5563)], mats: [lm.fab, lm.fabD, P2M.sofa, P2M.sofaD] },
     { id: 'cama', sec: 'Textiles', n: 'Ropa de cama', d: 'Cobijas', def: 0x8fa3b5,
       sw: [SW('Azul', 0x8fa3b5), SW('Blanco', 0xf4f2ee), SW('Lino', 0xd2c6b2), SW('Terracota', 0xc27b5b), SW('Salvia', 0x9cae98), SW('Gris', 0x8d9196)], mats: [RM.duvet] },
@@ -1382,13 +1382,16 @@ addEventListener('resize', () => {
   CATS.forEach(c => { c.list = []; const b = new THREE.Color(c.def).getHSL({ h: 0, s: 0, l: 0 }); c.b = b; });
   owner.forEach((c, m) => { const h = m.color.getHex(), o = m.color.getHSL({ h: 0, s: 0, l: 0 }), r = c.ref?.[h];
     c.list.push({ m, orig: h, o, b: r != null ? new THREE.Color(r).getHSL({ h: 0, s: 0, l: 0 }) : null }); });
+  // todo lo de una misma categoría queda del mismo color (solo las juntas y los cojines del sofá conservan su matiz)
+  CATS.forEach(c => c.list.forEach(e => { e.keep = c.keepAll || (c.keep || []).includes(e.orig);
+    if (!e.keep) { e.orig = c.def; e.m.color.setHex(c.def); } }));
   const roomOf = new Map(rooms.map(rm => [rm.mesh.material, rm]));
   const cl = v => Math.min(.97, Math.max(.03, v));
   function paint(c, hex) {
     const nb = new THREE.Color(hex).getHSL({ h: 0, s: 0, l: 0 });
     for (const e of c.list) { const b = e.b || c.b;
       if (hex === c.def) e.m.color.setHex(e.orig);
-      else if (c.flat) e.m.color.setHex(hex);
+      else if (c.flat || !e.keep) e.m.color.setHex(hex);
       else { const { o } = e;
         // misma diferencia de claridad que en el original, sin amplificarla (evita saltos en tonos casi blancos)
         const dl = o.l - b.l, k = dl < 0 ? Math.min(1, b.l ? nb.l / b.l : 1) : Math.min(1, (1 - nb.l) / (1 - b.l || 1)), l = nb.l + dl * k;
@@ -1436,8 +1439,8 @@ addEventListener('resize', () => {
   });
   pane.addEventListener('input', e => { if (e.target.type !== 'color') return; set(e.target.closest('.cr').dataset.c, parseInt(e.target.value.slice(1), 16)); refresh(); });
   render();
-  CATS.forEach(c => { if (state[c.id] != null) paint(c, state[c.id]); });
-  window.__colors = { CATS, set, val };
+  CATS.forEach(c => paint(c, val(c.id)));
+  window.__colors = { CATS, set, val, owner };
 })();
 // la propuesta 1 (interna 2) es la vista inicial
 setProp(2);
