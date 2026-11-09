@@ -700,7 +700,7 @@ lw(269, 547, 347, 612, 0, 94, LW.wm);   // lavasecadora a la izquierda, completa
   const gl = new THREE.Mesh(new THREE.CylinderGeometry(0.145, 0.145, 0.022, 32), LW.glass); gl.rotation.z = Math.PI / 2; gl.position.set(X(268.2), 0.45, Z(579.5)); laundry.add(gl); }
 lw(268.4, 551, 269, 608, 80, 90, LW.black);
 // mesón de piedra sinterizada 1.38 × 0.82 con poceta integrada y grifo negro
-lw(265, 545, 347, 658, 94, 98, LW.stone);
+lw(265, 545, 347, 658, 94, 98, km.top);                       // mismo granito del mesón de la cocina
 lw(287, 619, 338, 653, 96.5, 98.2, LW.basin);
 lw(343, 633, 347, 639, 103, 110, LW.black); lw(328, 634, 347, 638, 106, 110, LW.black);   // grifo de pared bajo la celosía
 // calentador oculto en celosía de listones (abierta abajo)
@@ -1341,7 +1341,7 @@ addEventListener('resize', () => {
     { id: 'frentes', sec: 'Muebles', n: 'Gabinetes y frentes', d: 'Cocina, clósets y alacenas', def: 0xf2efe9,
       sw: [SW('Blanco hueso', 0xf2efe9), SW('Blanco puro', 0xf8f8f6), SW('Greige', 0xd9d2c5), SW('Salvia', 0x9cae98), SW('Azul noche', 0x2f3e52), SW('Grafito', 0x45484d)],
       hex: [0xf4f1ea, 0xefe9df, 0xf4f2ee, 0xf2efe9, 0xe4dfd6, 0xf4f3f0, 0xd9d3c8, 0xc9c2b6], mats: [km.cab, km.upper, gm.white, RM.closet, RM.seam, AM.white, AM.seam, NM.cab, NM.cabD, LW.cab] },
-    { id: 'meson', sec: 'Muebles', n: 'Mesón de cocina', d: 'Mesón en L y península', def: 0x3a3f45, flat: 1,
+    { id: 'meson', sec: 'Muebles', n: 'Mesón (granito)', d: 'Cocina, península y lavandería', def: 0x3a3f45, flat: 1,
       sw: [SW('Grafito', 0x3a3f45), SW('Negro', 0x1f2124), SW('Cuarzo blanco', 0xebe8e2), SW('Mármol gris', 0xc9c9c6), SW('Concreto', 0x8b8680), SW('Madera', 0xb08560)], mats: [km.top] },
     { id: 'tiradores', sec: 'Muebles', n: 'Tiradores', d: 'Manijas y perfiles', def: 0x9aa3ab, flat: 1,
       sw: [SW('Acero', 0x9aa3ab), SW('Negro mate', 0x2b2f33), SW('Dorado', 0xc8a45c), SW('Cobre', 0xb87351), SW('Blanco', 0xf2f2f2), SW('Grafito', 0x3a3f45)], mats: [gm.handle, RM.handle, NM.handle, km.pull] },
