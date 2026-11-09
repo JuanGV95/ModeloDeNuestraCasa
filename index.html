@@ -1079,8 +1079,8 @@ roomDoors.forEach(d => d.piv.userData.act = 'alc'); bathDoors.forEach(d => d.piv
 entryPivot.userData.act = 'entry';
 [mClosed, mOpen, rcC, rcO].forEach(g => g.userData.act = 'bed');
 [slideA, slideB].forEach(g => g.userData.act = 'div'); study.children.forEach(m => { if (m.material === sm.slatFix) m.userData.act = 'div'; });
-rcLeaves.forEach(g => g.userData.act = 'rc'); xmas.userData.act = 'xl';
-const ACT_BTN = { xl: 'xlBtn', dine: 'dineBtn', alc: 'rdBtn', bath: 'bdBtn', entry: 'eBtn', bed: 'mBtn', div: 'divBtn', rc: 'rcBtn' };
+rcLeaves.forEach(g => g.userData.act = 'rc'); 
+const ACT_BTN = { dine: 'dineBtn', alc: 'rdBtn', bath: 'bdBtn', entry: 'eBtn', bed: 'mBtn', div: 'divBtn', rc: 'rcBtn' };
 const shown = o => { for (; o; o = o.parent) if (!o.visible) return false; return true; };
 const actOf = o => { for (; o; o = o.parent) if (o.userData.act) return o.userData.act; return null; };
 const pickables = () => [...floorMeshes, ...furn.children, ...cat.children, ...study.children, ...lounge.children, ...p2.children, ...alc2.children, ...laundry.children, ...entry.children, ...nicho.children, ...baths.children, ...rooms3d.children, ...doorsG.children, ...wallGroup.children, ...xmas.children];
@@ -1387,7 +1387,7 @@ setProp(2);
     const p = prop();
     $('paneMover').innerHTML =
       `<div class="grp"><div class="gt">🎄 Navidad</div>${seg('xmas','No','Sí','Árbol de Navidad')}` +
-      (st.xmas() ? `${seg('xloc','Península','Balcón','Ubicación')}${seg('xl','Apagadas','Encendidas','Luces')}<div class="hint">${st.xloc() ? 'Frente a la puerta-ventana: se ve desde afuera, pero tapa parte del TV desde el sofá y la salida al balcón.' : 'Recomendado: contra la pared, entre el final del mueble y la cocina (1.26 m libres); no tapa el TV y deja 0.75 m de paso al sofá. Asegúralo a la pared: queda a un salto de la pasarela.'}</div>` : '') + `</div>` +
+      `</div>` +
       `<div class="grp"><div class="gt">Puertas</div>${seg('entry','Cerrada','Abierta','Entrada')}${seg('alc','Cerradas','Abiertas','Alcobas')}${seg('bath','Cerradas','Abiertas','Baños')}</div>` +
       `<div class="grp"><div class="gt">Sala</div>${seg('dine','Sala','Comedor','Sofá convertible')}</div>` +
       (p === 1
@@ -1400,7 +1400,7 @@ setProp(2);
   addEventListener('actsync', () => sync());
   function sync() { document.querySelectorAll('#paneMover .seg').forEach(g => { const on = st[g.dataset.k]() ? '1' : '0'; g.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === on)); }); }
   $('paneMover').addEventListener('click', e => { const b = e.target.closest('.seg button'); if (!b) return; const k = b.closest('.seg').dataset.k;
-    if ((st[k]() ? '1' : '0') !== b.dataset.v) $(btn[k]).click(); if (k === 'xmas' || k === 'xloc') renderMover(); else sync(); });
+    if ((st[k]() ? '1' : '0') !== b.dataset.v) $(btn[k]).click(); sync(); });
   // chips de visibilidad
   const vis = [['furn','Cocina'],['cat','Gatero + TV'],['study','Estudio',1],['lounge','Sofá',1],['laundry','Lavandería'],['nichoChk','Areneros'],['bathChk','Baños'],['roomChk','Habitaciones']];
   function renderVer() { const p = prop();
