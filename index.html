@@ -550,7 +550,7 @@ for (let k = 0; k < 3; k++) { const y = 50 + (k + 0.5) * 271 / 3; g(45, y - 15, 
 // ---------- Estudio doble + divisor de listones (versión 2) ----------
 const study = new THREE.Group(); scene.add(study);
 const SM = c => new THREE.MeshStandardMaterial({ color: c, roughness: .7 });
-const sm = { top: SM(0xa8754a), cab: SM(0x3f4b5c), slot: SM(0x1f262f), mon: new THREE.MeshStandardMaterial({ color: 0x15181b, roughness: .25, metalness: .2 }),
+const sm = { top: SM(0xa8754a), cab: SM(0xf2efe9), slot: SM(0x1f262f), mon: new THREE.MeshStandardMaterial({ color: 0x15181b, roughness: .25, metalness: .2 }),
   arm: SM(0x555b62), tower: new THREE.MeshStandardMaterial({ color: 0x2a2d33, roughness: .4, metalness: .3 }),
   glass: new THREE.MeshStandardMaterial({ color: 0x4b3f7a, emissive: 0x6d4fd6, emissiveIntensity: .55, roughness: .2 }),
   chair: SM(0x3c4148), base: SM(0x2b2f33), slat: SM(0x7a4a2e), slatFix: SM(0x6a3f27), track: SM(0x3a3f45),
@@ -715,7 +715,7 @@ const p2 = new THREE.Group(); scene.add(p2); p2.visible = false;
 const P2M = { walnut: SM(0x7a4e2d), walnutD: SM(0x6a4226), fabric: new THREE.MeshStandardMaterial({ color: 0x4a3f38, roughness: 1 }),
   sofa: new THREE.MeshStandardMaterial({ color: 0x8d969c, roughness: 1 }), sofaD: new THREE.MeshStandardMaterial({ color: 0x7b858b, roughness: 1 }),
   pillow: new THREE.MeshStandardMaterial({ color: 0xd9cfc0, roughness: 1 }), rug: new THREE.MeshStandardMaterial({ color: 0xc9cfd3, roughness: 1 }),
-  legs: SM(0x2b2f33), oak: SM(0xa8754a), struct: SM(0x3f4b5c), mon: new THREE.MeshStandardMaterial({ color: 0x15181b, roughness: .25, metalness: .2 }),
+  legs: SM(0x2b2f33), oak: SM(0xa8754a), struct: SM(0xf2efe9), mon: new THREE.MeshStandardMaterial({ color: 0x15181b, roughness: .25, metalness: .2 }),
   arm: SM(0x555b62), tower: new THREE.MeshStandardMaterial({ color: 0x2a2d33, roughness: .4, metalness: .3 }),
   glass: new THREE.MeshStandardMaterial({ color: 0x4b3f7a, emissive: 0x6d4fd6, emissiveIntensity: .55 }),
   led: new THREE.MeshStandardMaterial({ color: 0xffe2a8, emissive: 0xffc96b, emissiveIntensity: 1.2 }) };
@@ -749,7 +749,7 @@ p2Puff.position.set(X(38), 0, Z(258));
   s2.children = s2.children.filter((c, i) => !drop.has(i) && !(c.material && (c.material === sm.track || c.material === sm.slatFix)));
   s2.children.forEach(c => c.parent = s2); s2.visible = true; p2.add(s2); }
 // repisa de cubos llevada hasta el muro de la fachada y hasta el techo, con gabinetes para guardar
-{ const CB = SM(0x3f4b5c), CBd = SM(0x2f3947), H = SM(0x9aa3ab);
+{ const CB = SM(0xf2efe9), CBd = SM(0xe4dfd6), H = SM(0x9aa3ab);
   q(704, 10, 734, 40, 165, 167, CB); q(704, 10, 734, 40, 213, 215, CB); q(732, 10, 734, 40, 167, 213, CB); q(704, 10, 734, 12, 165, 215, CB);   // cubo extra junto a la fachada
   q(706, 12, 709, 42, 164.4, 165, P2M.led);
   /* los gabinetes superiores hasta el techo vienen de la copia del estudio */ }
@@ -1340,7 +1340,7 @@ addEventListener('resize', () => {
       hex: [0xd8b07a, 0xc49a63, 0xa8754a, 0xb08560, 0xc9a27a, 0xd8b991, 0x9b6f4a, 0x7a4a2e, 0x6a3f27, 0x7a4e2d, 0x6a4226] },
     { id: 'frentes', sec: 'Muebles', n: 'Gabinetes y frentes', d: 'Cocina, clósets, alacenas y estudio', def: 0xf2efe9,
       sw: [SW('Blanco hueso', 0xf2efe9), SW('Blanco puro', 0xf8f8f6), SW('Greige', 0xd9d2c5), SW('Salvia', 0x9cae98), SW('Azul noche', 0x2f3e52), SW('Grafito', 0x45484d)],
-      hex: [0xf4f1ea, 0xefe9df, 0xf4f2ee, 0xf2efe9, 0xe4dfd6, 0xf4f3f0, 0xd9d3c8, 0xc9c2b6, 0x3f4b5c, 0x2f3947], ref: { [0x3f4b5c]: 0x3f4b5c, [0x2f3947]: 0x3f4b5c }, mats: [km.cab, km.upper, gm.white, RM.closet, RM.seam, AM.white, AM.seam, NM.cab, NM.cabD, LW.cab] },
+      hex: [0xf4f1ea, 0xefe9df, 0xf4f2ee, 0xf2efe9, 0xe4dfd6, 0xf4f3f0, 0xd9d3c8, 0xc9c2b6], mats: [km.cab, km.upper, gm.white, RM.closet, RM.seam, AM.white, AM.seam, NM.cab, NM.cabD, LW.cab] },
     { id: 'meson', sec: 'Muebles', n: 'Mesón (granito)', d: 'Cocina, península y lavandería', def: 0x3a3f45, flat: 1,
       sw: [SW('Grafito', 0x3a3f45), SW('Negro', 0x1f2124), SW('Cuarzo blanco', 0xebe8e2), SW('Mármol gris', 0xc9c9c6), SW('Concreto', 0x8b8680), SW('Madera', 0xb08560)], mats: [km.top] },
     { id: 'tiradores', sec: 'Muebles', n: 'Tiradores', d: 'Manijas y perfiles', def: 0x9aa3ab, flat: 1,
