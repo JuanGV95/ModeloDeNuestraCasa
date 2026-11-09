@@ -429,8 +429,8 @@ buildWalls(H_FULL);
 const furn = new THREE.Group(); scene.add(furn);
 // ---------- Cocina · Propuesta B (en L con península, sin barra) ----------
 const KM = c => new THREE.MeshStandardMaterial({ color: c, roughness: .75 });
-const km = { cab: KM(0xf4f1ea), top: KM(0x3a3f45), plinth: KM(0x1f2226), steel: new THREE.MeshStandardMaterial({ color: 0x8b939b, roughness: .35, metalness: .5 }),
-  sink: new THREE.MeshStandardMaterial({ color: 0xc9d0d6, roughness: .3, metalness: .6 }), black: KM(0x1f2226), upper: KM(0xefe9df),
+const km = { cab: KM(0xf2efe9), top: KM(0x3a3f45), plinth: KM(0x1f2226), steel: new THREE.MeshStandardMaterial({ color: 0x8b939b, roughness: .35, metalness: .5 }),
+  sink: new THREE.MeshStandardMaterial({ color: 0xc9d0d6, roughness: .3, metalness: .6 }), black: KM(0x1f2226), upper: KM(0xf2efe9),
   hood: new THREE.MeshStandardMaterial({ color: 0xb9c0c6, roughness: .4, metalness: .4 }), bar: KM(0xb08560), stool: KM(0x5d7a8c), seam: KM(0x2b3036), pull: KM(0x2b3036) };
 function k(x1, y1, x2, y2, b, t, mat) {
   const m = new THREE.Mesh(new THREE.BoxGeometry((x2 - x1) / 100, t - b, (y2 - y1) / 100), mat);
@@ -479,7 +479,7 @@ furn.children.forEach(m => { m.castShadow = false; m.receiveShadow = false; });
 // ---------- Mueble gatero + TV (muro de la sala junto a la cocina) ----------
 const cat = new THREE.Group(); scene.add(cat);
 const GM = c => new THREE.MeshStandardMaterial({ color: c, roughness: .7 });
-const gm = { wood: GM(0xd8b07a), woodD: GM(0xc49a63), white: GM(0xf4f2ee), panel: GM(0xd9dcdf), tv: new THREE.MeshStandardMaterial({ color: 0x15181b, roughness: .25, metalness: .2 }),
+const gm = { wood: GM(0xd8b07a), woodD: GM(0xc49a63), white: GM(0xf2efe9), panel: GM(0xd9dcdf), tv: new THREE.MeshStandardMaterial({ color: 0x15181b, roughness: .25, metalness: .2 }),
   sisal: GM(0xcdb68c), hole: new THREE.MeshStandardMaterial({ color: 0x2e2d2b, roughness: 1, side: THREE.DoubleSide }), felt: GM(0x4a4f55), bowl: GM(0xb5714d),
   handle: GM(0x9aa3ab), led: new THREE.MeshStandardMaterial({ color: 0xffe2a8, emissive: 0xffc96b, emissiveIntensity: 1.2 }) };
 function g(x1, y1, x2, y2, b, t, mat) {
@@ -684,7 +684,7 @@ let dining = false, puffZ = 0, puffTarget = 0;
 
 // ---------- Lavandería (propuesta C) ----------
 const laundry = new THREE.Group(); scene.add(laundry);
-const LW = { cab: SM(0xf4f3f0), plinth: SM(0xd5d8dc), stone: SM(0x7e8389), basin: SM(0x5f646a), black: SM(0x1f2226),
+const LW = { cab: SM(0xf2efe9), plinth: SM(0xd5d8dc), stone: SM(0x7e8389), basin: SM(0x5f646a), black: SM(0x1f2226),
   wm: SM(0xf7f7f7), wmDoor: new THREE.MeshStandardMaterial({ color: 0x2b3036, roughness: .2, metalness: .3 }), glass: new THREE.MeshStandardMaterial({ color: 0x7d8790, roughness: .1, metalness: .2 }),
   wood: SM(0xc9a27a), heater: SM(0xfbfbfb), soffit: SM(0xe3e6ea), tile: SM(0xd9dde2) };
 function lw(x1, y1, x2, y2, b, t, mat, parent = laundry) { return sb(x1, y1, x2, y2, b, t, mat, parent); }
@@ -1390,9 +1390,10 @@ addEventListener('resize', () => {
       if (hex === c.def) e.m.color.setHex(e.orig);
       else if (c.flat) e.m.color.setHex(hex);
       else { const { o } = e;
-        const l = o.l <= b.l ? nb.l * (b.l ? o.l / b.l : 1) : 1 - (1 - nb.l) * ((1 - o.l) / (1 - b.l || 1));
+        // misma diferencia de claridad que en el original, sin amplificarla (evita saltos en tonos casi blancos)
+        const dl = o.l - b.l, k = dl < 0 ? Math.min(1, b.l ? nb.l / b.l : 1) : Math.min(1, (1 - nb.l) / (1 - b.l || 1)), l = nb.l + dl * k;
         const s = nb.s < .04 ? nb.s : Math.min(1, nb.s * (b.s ? o.s / b.s : 1));
-        e.m.color.setHSL((nb.h + o.h - b.h + 1) % 1, s, cl(l)); }
+        e.m.color.setHSL(b.s < .15 || o.s < .15 ? nb.h : (nb.h + o.h - b.h + 1) % 1, s, cl(l)); }
       const rm = roomOf.get(e.m); if (rm) { rm.base = e.m.color.getHex(); rm.row?.querySelector('.sw')?.style.setProperty('background', '#' + e.m.color.getHexString());
         if (sel >= 0 && rooms[sel] === rm) e.m.color.setHex(0xf2a26f); }
     }
