@@ -283,15 +283,15 @@ scene.add(ground);
 const grid = new THREE.GridHelper(30, 30, 0xcfd5dc, 0xd9dee3); grid.position.y = -0.015; scene.add(grid);
 
 // ---------- Espacios (cm: x1, y1, x2, y2 — medidas libres) ----------
-const WOOD = 0xd9b98f, WOOD2 = 0xcfae84, TILE = 0xdfe3e6, TILE2 = 0xd3d9de;
+const WOOD = 0xd9b98f, WOOD2 = 0xcfae84, TILE = 0xdfe3e6, TILE2 = 0xf3f3f1;
 // enchape: textura de baldosa con boquilla (el color lo da el material, así se puede personalizar)
 const tileTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d');
-  x.fillStyle = '#fff'; x.fillRect(0, 0, 128, 128); x.fillStyle = '#c9cdd1'; x.fillRect(0, 0, 128, 3); x.fillRect(0, 0, 3, 128);
+  x.fillStyle = '#fff'; x.fillRect(0, 0, 128, 128); x.fillStyle = '#d6d9dc'; x.fillRect(0, 0, 128, 2); x.fillRect(0, 0, 2, 128);
   const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; })();
 // escala las UV de cada cara de una caja según sus medidas reales (baldosa de `cm` × `cm`)
-function tileUV(geo, w, h, d, cm) { const uv = geo.attributes.uv, k = 100 / cm;
+function tileUV(geo, w, h, d, cu, cv = cu) { const uv = geo.attributes.uv;
   const dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
-  for (let f = 0; f < 6; f++) for (let i = 0; i < 4; i++) { const j = f * 4 + i; uv.setXY(j, uv.getX(j) * dims[f][0] * k, uv.getY(j) * dims[f][1] * k); }
+  for (let f = 0; f < 6; f++) for (let i = 0; i < 4; i++) { const j = f * 4 + i; uv.setXY(j, uv.getX(j) * dims[f][0] * 100 / cu, uv.getY(j) * dims[f][1] * 100 / cv); }
   uv.needsUpdate = true; return geo; }
 const rooms = [
   { n: 'Sala Comedor', r: [10, 10, 304, 295], c: WOOD, note: 'Mueble TV + gatos de 1.85 m: torre flotante sobre el mesón (huecos a 1.05 y 1.48) hasta el techo, mesón flotante a 72 con cajonera de 4 cajones hasta el muro del balcón, poste de sisal en la punta del mesón y tapete de sisal para rascar, comederos en base elevada bajo la punta del mesón, TV 55" centrado (de 0.855 a 1.565), pasarela de gatos a 1.70 y gabinetes de 2.05 al techo que siguen hasta la cocina. Los areneros van en el nicho del hall. Sofá J&D de 1.40 m mirando al TV que se convierte en comedor (tablero 1.40 × 0.68 sobre los brazos curvos) + 1 puff con almacenamiento. Se separa del estudio con un divisor de listones (hoja central fija y dos pasos de 0.95 m).' },
@@ -319,7 +319,7 @@ rooms.forEach((rm, i) => {
   const [x1, y1, x2, y2] = rm.r;
   const tiled = rm.c === TILE2, w = (x2 - x1) / 100, d = (y2 - y1) / 100;
   const mat = new THREE.MeshStandardMaterial({ color: rm.c, roughness: tiled ? .5 : .85, map: tiled ? tileTex : null });
-  const m = new THREE.Mesh(tiled ? tileUV(new THREE.BoxGeometry(w, 0.004, d), w, 0.004, d, 40) : new THREE.BoxGeometry(w, 0.004, d), mat);   // piso a ras (4 mm), sigue siendo cliqueable
+  const m = new THREE.Mesh(tiled ? tileUV(new THREE.BoxGeometry(w, 0.004, d), w, 0.004, d, 60, 120) : new THREE.BoxGeometry(w, 0.004, d), mat);   // piso a ras (4 mm), sigue siendo cliqueable
   m.position.set(X((x1 + x2) / 2), 0.002, Z((y1 + y2) / 2));
   m.receiveShadow = true; m.userData.i = i; rm.mesh = m; rm.base = rm.c;
   scene.add(m); floorMeshes.push(m);
@@ -363,7 +363,7 @@ const walls = [
   [580,305,590,380,'P'],[580,380,590,518,'W'],[580,518,590,586,'P'],[580,586,590,658,'W'],
 ];
 const wallGroup = new THREE.Group(); scene.add(wallGroup);
-const wallTileMat = new THREE.MeshStandardMaterial({ color: 0xeef0f1, roughness: .35, map: tileTex });
+const wallTileMat = new THREE.MeshStandardMaterial({ color: 0xf3f3f1, roughness: .35, map: tileTex });
 // enchape de muros: baños (paredes completas) y pared del mesón de la cocina (cara interior, 6 mm)
 const CLAD = [
   // baño social
@@ -394,7 +394,7 @@ function glazing(x1, y1, x2, y2, b, t, mull) {
 function buildWalls(H) {
   wallGroup.clear();
   for (const [x1, y1, x2, y2] of CLAD) { const w = (x2 - x1) / 100, d = (y2 - y1) / 100;
-    const m = new THREE.Mesh(tileUV(new THREE.BoxGeometry(w, H, d), w, H, d, 30), wallTileMat);
+    const m = new THREE.Mesh(tileUV(new THREE.BoxGeometry(w, H, d), w, H, d, 60, 120), wallTileMat);
     m.position.set(X((x1 + x2) / 2), H / 2, Z((y1 + y2) / 2)); m.receiveShadow = true; wallGroup.add(m); }
   const cap = (x1, y1, x2, y2) => box(x1, y1, x2, y2, H, H + 0.02, capMat, false);
   for (const [x1, y1, x2, y2, t, o = {}] of walls) {
@@ -1349,10 +1349,10 @@ addEventListener('resize', () => {
     { id: 'piso', sec: 'Superficies', n: 'Piso laminado', d: 'Todo menos los baños', def: WOOD,
       sw: [SW('Roble miel', WOOD), SW('Roble claro', 0xe3cfae), SW('Natural', 0xc4a27a), SW('Nogal', 0x9a7351), SW('Roble gris', 0xb3aba0), SW('Porcelanato arena', 0xddd3c4)],
       hex: [WOOD, WOOD2, 0xd6bd96] },
-    { id: 'enchape', sec: 'Superficies', n: 'Enchape de paredes', d: 'Baños y pared del mesón de la cocina', def: 0xeef0f1, flat: 1,
-      sw: [SW('Blanco', 0xeef0f1), SW('Gris perla', 0xd3d9de), SW('Arena', 0xe2d8c8), SW('Verde salvia', 0xb9c7b4), SW('Azul agua', 0xa9c8d0), SW('Terracota', 0xc98a6c)], mats: [wallTileMat] },
-    { id: 'baldosa', sec: 'Superficies', n: 'Piso de baños', d: 'Baldosa de los dos baños', def: TILE2, flat: 1,
-      sw: [SW('Gris perla', TILE2), SW('Blanco', 0xf1f1ef), SW('Arena', 0xddd3c4), SW('Gris medio', 0xa9adb1), SW('Grafito', 0x5c6166), SW('Terracota', 0xc47a5a)], hex: [TILE2] },
+    { id: 'enchape', sec: 'Superficies', n: 'Enchape de paredes', d: 'Baños y pared del mesón · gran formato 60 × 120', def: 0xf3f3f1, flat: 1,
+      sw: [SW('Blanco', 0xf3f3f1), SW('Gris perla', 0xd3d9de), SW('Arena', 0xe2d8c8), SW('Verde salvia', 0xb9c7b4), SW('Azul agua', 0xa9c8d0), SW('Terracota', 0xc98a6c)], mats: [wallTileMat] },
+    { id: 'baldosa', sec: 'Superficies', n: 'Piso de baños', d: 'Baldosa gran formato 60 × 120', def: TILE2, flat: 1,
+      sw: [SW('Blanco', TILE2), SW('Gris perla', 0xd3d9de), SW('Arena', 0xddd3c4), SW('Gris medio', 0xa9adb1), SW('Grafito', 0x5c6166), SW('Terracota', 0xc47a5a)], hex: [TILE2] },
     { id: 'paredes', sec: 'Superficies', n: 'Paredes', d: 'Todos los muros', def: 0xf7f7f5, flat: 1,
       sw: [SW('Blanco', 0xf7f7f5), SW('Hueso', 0xefe9df), SW('Arena', 0xe6dccb), SW('Gris niebla', 0xdfe2e4), SW('Salvia', 0xc8d1c2), SW('Terracota suave', 0xe2b9a1)], mats: [wallMat] },
     { id: 'puertas', sec: 'Superficies', n: 'Puertas', d: 'Hojas y marcos interiores', def: 0xf4f2ee,
