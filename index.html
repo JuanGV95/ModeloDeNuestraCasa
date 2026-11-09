@@ -112,6 +112,25 @@
   #toast.ok{display:block;background:#eefaf3;color:#1f5f43;border:1px solid #bfe5cf}
   #loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px}
   .sht,.ico,.hdl{display:none}
+  #side{width:296px}
+  .styles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .sty{display:flex;flex-direction:column;align-items:flex-start;gap:6px;border:1.5px solid #e2e7ec;background:#fff;border-radius:10px;padding:7px 8px;font:600 11.5px Inter,sans-serif;color:var(--ink);cursor:pointer;text-align:left}
+  .sty .strip{display:flex;width:100%;height:14px;border-radius:5px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+  .sty .strip i{flex:1}
+  .sty.on{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy)}
+  .cr{margin:4px 2px 12px}
+  .ch{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:12.5px}
+  .ch .cn{font-weight:600;color:var(--ink)}.ch .cv{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sws{display:flex;flex-wrap:wrap;gap:7px}
+  .swb{position:relative;width:28px;height:28px;border-radius:50%;border:0;padding:0;cursor:pointer;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);flex:none}
+  .swb.on{box-shadow:inset 0 0 0 1px rgba(0,0,0,.12),0 0 0 2px #fff,0 0 0 4px var(--navy)}
+  .swb:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .swc{background:var(--c,conic-gradient(#e66,#eb5,#8c6,#5bc,#68d,#a6d,#e66))}
+  .swc:not(.on)::after{content:'+';position:absolute;inset:0;display:grid;place-items:center;font:700 15px Inter,sans-serif;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45)}
+  .swc input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
+  .colft{display:flex;flex-direction:column;gap:6px}
+  .reset{border:1.5px solid #d7dde3;background:#fff;border-radius:10px;padding:8px;font:600 12px Inter,sans-serif;color:var(--navy);cursor:pointer}
+  .reset:hover,.sty:hover{border-color:#b8c2cc}
   @media (max-width:760px){
     /* barra superior en una sola fila: propuesta · modo de vista · galería */
     #top{top:calc(8px + env(safe-area-inset-top));left:8px;right:8px;max-width:none;padding:5px;display:flex;align-items:center;gap:5px;border-radius:14px}
@@ -137,6 +156,8 @@
     .it{margin:9px 2px}.seg button{padding:7px 11px;font-size:12px}
     .chip span{padding:7px 12px;font-size:12px}
     .room{padding:10px 8px}
+    .swb{width:34px;height:34px}.sws{gap:9px}.sty{padding:9px 10px;font-size:12px;flex:0 0 116px;scroll-snap-align:start}
+    .styles{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -2px;padding:2px 2px 4px;scrollbar-width:none}.styles::-webkit-scrollbar{display:none}
     /* ficha del espacio: compacta sobre la barra, se expande al tocar */
     #info{padding:18px 18px 20px;max-height:calc(100vh - 140px)}#info.img{max-height:calc(100vh - 40px)}
     #info .media{margin:-18px -18px 14px}#info .media img{max-height:42vh}
@@ -180,7 +201,7 @@
 </div>
 
 <div id="side" class="panel">
-  <button class="hdl" aria-label="Abrir o cerrar el panel"></button><div class="tabs" role="tablist"><button data-t="mover" class="on"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Interactuar</button><button data-t="ver"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Mostrar</button><button data-t="esp"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 11h9M12 3v18M12 15h9"/></svg>Espacios</button></div>
+  <button class="hdl" aria-label="Abrir o cerrar el panel"></button><div class="tabs" role="tablist"><button data-t="mover" class="on"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Interactuar</button><button data-t="ver"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Mostrar</button><button data-t="esp"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 11h9M12 3v18M12 15h9"/></svg>Espacios</button><button data-t="col"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.9 1.8-1.9 0-.5-.2-.9-.5-1.3-.3-.3-.5-.8-.5-1.2 0-1 .8-1.8 1.8-1.8H17a4 4 0 0 0 4-4c0-4.4-4-7.8-9-7.8z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7.2" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/></svg>Colores</button></div>
   <div class="pane" data-p="mover" id="paneMover"></div>
   <div class="pane" data-p="ver" hidden>
     <div class="grp"><div class="gt">Muebles visibles</div><div class="chips" id="chipsVer"></div></div>
@@ -387,7 +408,7 @@ const furn = new THREE.Group(); scene.add(furn);
 const KM = c => new THREE.MeshStandardMaterial({ color: c, roughness: .75 });
 const km = { cab: KM(0xf4f1ea), top: KM(0x3a3f45), plinth: KM(0x1f2226), steel: new THREE.MeshStandardMaterial({ color: 0x8b939b, roughness: .35, metalness: .5 }),
   sink: new THREE.MeshStandardMaterial({ color: 0xc9d0d6, roughness: .3, metalness: .6 }), black: KM(0x1f2226), upper: KM(0xefe9df),
-  hood: new THREE.MeshStandardMaterial({ color: 0xb9c0c6, roughness: .4, metalness: .4 }), bar: KM(0xb08560), stool: KM(0x5d7a8c), seam: KM(0x2b3036) };
+  hood: new THREE.MeshStandardMaterial({ color: 0xb9c0c6, roughness: .4, metalness: .4 }), bar: KM(0xb08560), stool: KM(0x5d7a8c), seam: KM(0x2b3036), pull: KM(0x2b3036) };
 function k(x1, y1, x2, y2, b, t, mat) {
   const m = new THREE.Mesh(new THREE.BoxGeometry((x2 - x1) / 100, t - b, (y2 - y1) / 100), mat);
   m.position.set(X((x1 + x2) / 2), (b + t) / 2, Z((y1 + y2) / 2)); furn.add(m); return m;
@@ -400,7 +421,7 @@ function kc(cx, cy, r, b, t, mat) {
 // Mesón sobre el muro: esquina 321–381 · estufa 381–441 · mesón 441–498 · lavaplatos 498–578
 for (const [a, b] of [[321, 381], [381, 441], [441, 498], [498, 578]]) {
   k(10, a, 68, b - 0.4, 0.10, 0.86, km.cab); k(10, a, 66, b, 0, 0.10, km.plinth);
-  k(68, a + 2, 68.6, b - 2, 0.80, 0.82, km.seam);                    // tirador
+  k(68, a + 2, 68.6, b - 2, 0.80, 0.82, km.pull);                    // tirador
 }
 k(10, 321, 70, 578, 0.86, 0.90, km.top);
 // estufa 4 puestos
@@ -421,7 +442,7 @@ k(45, 384, 45.6, 438, 1.585, 1.60, km.seam);                        // ranura fr
 k(10, 578, 45, 658, 1.76, 2.40, km.upper);
 for (const y of [381, 441, 509.5, 578, 618]) k(45, y - 0.3, 45.4, y + 0.3, y === 578 ? 1.50 : (y === 618 ? 1.76 : 1.50), 2.40, km.seam);
 k(45, 321, 45.4, 658, 1.995, 2.005, km.seam);                       // línea de puertas continua a 2.00
-for (const [y, z] of [[351, 1.53], [411, 1.73], [475, 1.53], [543, 1.53], [598, 1.79], [638, 1.79]]) k(45, y - 6, 46, y + 6, z, z + 0.015, km.seam);   // tiradores
+for (const [y, z] of [[351, 1.53], [411, 1.73], [475, 1.53], [543, 1.53], [598, 1.79], [638, 1.79]]) k(45, y - 6, 46, y + 6, z, z + 0.015, km.pull);   // tiradores
 // Nevera 76 × 88.6 × 169.7 cm (puertas francesas + cajón)
 const fx1 = 12, fx2 = 12 + 88.6, fy1 = 580, fy2 = 656;
 k(fx1, fy1, fx2, fy2, 0.02, 1.717, km.steel);
@@ -1286,6 +1307,110 @@ loop();
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight);
 });
+// ---------- Personalizar colores ----------
+// Cada categoría agrupa materiales; al cambiar el color base se conservan los matices relativos (claros/oscuros) de cada pieza.
+(() => {
+  const SW = (n, h) => ({ n, h });
+  const CATS = [
+    { id: 'madera', sec: 'Muebles', n: 'Madera', d: 'Gatero, mesones, cabeceros, estudio', def: 0xc9a27a,
+      sw: [SW('Roble natural', 0xc9a27a), SW('Roble claro', 0xdcc3a0), SW('Fresno blanqueado', 0xe6d8c3), SW('Nogal', 0x7a4e2d), SW('Wengué', 0x4a3426), SW('Ceniza', 0xa39a8f)],
+      hex: [0xd8b07a, 0xc49a63, 0xa8754a, 0xb08560, 0xc9a27a, 0xd8b991, 0x9b6f4a, 0x7a4a2e, 0x6a3f27, 0x7a4e2d, 0x6a4226] },
+    { id: 'frentes', sec: 'Muebles', n: 'Gabinetes y frentes', d: 'Cocina, clósets y alacenas', def: 0xf2efe9,
+      sw: [SW('Blanco hueso', 0xf2efe9), SW('Blanco puro', 0xf8f8f6), SW('Greige', 0xd9d2c5), SW('Salvia', 0x9cae98), SW('Azul noche', 0x2f3e52), SW('Grafito', 0x45484d)],
+      hex: [0xf4f1ea, 0xefe9df, 0xf4f2ee, 0xf2efe9, 0xe4dfd6, 0xf4f3f0, 0xd9d3c8, 0xc9c2b6], mats: [km.cab, km.upper, gm.white, RM.closet, RM.seam, AM.white, AM.seam, NM.cab, NM.cabD, LW.cab] },
+    { id: 'meson', sec: 'Muebles', n: 'Mesón de cocina', d: 'Mesón en L y península', def: 0x3a3f45, flat: 1,
+      sw: [SW('Grafito', 0x3a3f45), SW('Negro', 0x1f2124), SW('Cuarzo blanco', 0xebe8e2), SW('Mármol gris', 0xc9c9c6), SW('Concreto', 0x8b8680), SW('Madera', 0xb08560)], mats: [km.top] },
+    { id: 'tiradores', sec: 'Muebles', n: 'Tiradores', d: 'Manijas y perfiles', def: 0x9aa3ab, flat: 1,
+      sw: [SW('Acero', 0x9aa3ab), SW('Negro mate', 0x2b2f33), SW('Dorado', 0xc8a45c), SW('Cobre', 0xb87351), SW('Blanco', 0xf2f2f2), SW('Grafito', 0x3a3f45)], mats: [gm.handle, RM.handle, NM.handle, km.pull] },
+    { id: 'piso', sec: 'Superficies', n: 'Piso laminado', d: 'Sala, estudio, alcobas y hall', def: WOOD,
+      sw: [SW('Roble miel', WOOD), SW('Roble claro', 0xe3cfae), SW('Natural', 0xc4a27a), SW('Nogal', 0x9a7351), SW('Roble gris', 0xb3aba0), SW('Porcelanato arena', 0xddd3c4)],
+      hex: [WOOD, WOOD2, 0xd6bd96] },
+    { id: 'baldosa', sec: 'Superficies', n: 'Baldosa', d: 'Cocina, baños y ropas', def: TILE,
+      sw: [SW('Gris perla', TILE), SW('Blanco', 0xf1f1ef), SW('Arena', 0xddd3c4), SW('Gris medio', 0xa9adb1), SW('Terracota', 0xc47a5a), SW('Verde agua', 0xa9c8c0)], hex: [TILE, TILE2] },
+    { id: 'paredes', sec: 'Superficies', n: 'Paredes', d: 'Todos los muros', def: 0xf7f7f5, flat: 1,
+      sw: [SW('Blanco', 0xf7f7f5), SW('Hueso', 0xefe9df), SW('Arena', 0xe6dccb), SW('Gris niebla', 0xdfe2e4), SW('Salvia', 0xc8d1c2), SW('Terracota suave', 0xe2b9a1)], mats: [wallMat] },
+    { id: 'puertas', sec: 'Superficies', n: 'Puertas', d: 'Hojas y marcos interiores', def: 0xf4f2ee,
+      sw: [SW('Blanco', 0xf4f2ee), SW('Hueso', 0xece5d8), SW('Roble', 0xc9a27a), SW('Gris claro', 0xd5d8dc), SW('Negro', 0x2b2f33), SW('Azul noche', 0x2f3e52)], mats: [DM.leaf, slideDoor.material, doorFrameMat] },
+    { id: 'sofa', sec: 'Textiles', n: 'Sofá y puff', d: 'Tapizado', def: 0x7f8f98,
+      sw: [SW('Gris azulado', 0x7f8f98), SW('Gris claro', 0xb9bcbd), SW('Beige', 0xd2c6b2), SW('Oliva', 0x7d8460), SW('Terracota', 0xb4694a), SW('Petróleo', 0x2f5563)], mats: [lm.fab, lm.fabD, P2M.sofa, P2M.sofaD] },
+    { id: 'cama', sec: 'Textiles', n: 'Ropa de cama', d: 'Cobijas', def: 0x8fa3b5,
+      sw: [SW('Azul', 0x8fa3b5), SW('Blanco', 0xf4f2ee), SW('Lino', 0xd2c6b2), SW('Terracota', 0xc27b5b), SW('Salvia', 0x9cae98), SW('Gris', 0x8d9196)], mats: [RM.duvet] },
+  ];
+  const STYLES = [
+    { n: 'Original', v: {} },
+    { n: 'Nórdico', v: { madera: 0xdcc3a0, frentes: 0xf8f8f6, meson: 0xebe8e2, tiradores: 0x2b2f33, piso: 0xe3cfae, sofa: 0xb9bcbd, paredes: 0xf7f7f5 } },
+    { n: 'Nogal cálido', v: { madera: 0x7a4e2d, meson: 0x1f2124, tiradores: 0xc8a45c, piso: 0xc4a27a, sofa: 0xd2c6b2, paredes: 0xefe9df, cama: 0xc27b5b } },
+    { n: 'Japandi', v: { madera: 0xa39a8f, frentes: 0xd9d2c5, meson: 0x8b8680, tiradores: 0x2b2f33, piso: 0xb3aba0, sofa: 0xd2c6b2, paredes: 0xe6dccb, cama: 0xd2c6b2 } },
+    { n: 'Salvia', v: { madera: 0xc9a27a, frentes: 0x9cae98, meson: 0xebe8e2, tiradores: 0xc8a45c, piso: 0xd9b98f, sofa: 0xd2c6b2, paredes: 0xf7f7f5, cama: 0x9cae98 } },
+    { n: 'Contraste', v: { madera: 0xc9a27a, frentes: 0x2f3e52, meson: 0xebe8e2, tiradores: 0xc8a45c, piso: 0xe3cfae, sofa: 0xb9bcbd, puertas: 0xf4f2ee } },
+  ];
+  // --- materiales de cada categoría (referencias explícitas primero, luego por color original) ---
+  const byId = Object.fromEntries(CATS.map(c => [c.id, c])), owner = new Map();
+  CATS.forEach(c => (c.mats || []).forEach(m => m && !owner.has(m) && owner.set(m, c)));
+  const inXmas = o => { for (let p = o; p; p = p.parent) if (p === xmas) return true; return false; };
+  const exclude = new Set([RM.mattress]);
+  scene.traverse(o => { if (!o.isMesh || inXmas(o)) return;
+    (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { if (!m?.color || owner.has(m) || exclude.has(m) || m.emissiveIntensity > 0 && m.emissive?.getHex()) return;
+      const h = m.color.getHex(), c = CATS.find(c => c.hex && c.hex.includes(h)); if (c) owner.set(m, c); }); });
+  const T = { h: 0, s: 0, l: 0 };
+  CATS.forEach(c => { c.list = []; const b = new THREE.Color(c.def).getHSL({ h: 0, s: 0, l: 0 }); c.b = b; });
+  owner.forEach((c, m) => { const o = m.color.getHSL({ h: 0, s: 0, l: 0 }); c.list.push({ m, orig: m.color.getHex(), o }); });
+  const roomOf = new Map(rooms.map(rm => [rm.mesh.material, rm]));
+  const cl = v => Math.min(.97, Math.max(.03, v));
+  function paint(c, hex) {
+    const nb = new THREE.Color(hex).getHSL({ h: 0, s: 0, l: 0 }), b = c.b;
+    for (const e of c.list) {
+      if (hex === c.def) e.m.color.setHex(e.orig);
+      else if (c.flat) e.m.color.setHex(hex);
+      else { const { o } = e;
+        const l = o.l <= b.l ? nb.l * (b.l ? o.l / b.l : 1) : 1 - (1 - nb.l) * ((1 - o.l) / (1 - b.l || 1));
+        const s = nb.s < .04 ? nb.s : Math.min(1, nb.s * (b.s ? o.s / b.s : 1));
+        e.m.color.setHSL((nb.h + o.h - b.h + 1) % 1, s, cl(l)); }
+      const rm = roomOf.get(e.m); if (rm) { rm.base = e.m.color.getHex(); rm.row?.querySelector('.sw')?.style.setProperty('background', '#' + e.m.color.getHexString());
+        if (sel >= 0 && rooms[sel] === rm) e.m.color.setHex(0xf2a26f); }
+    }
+  }
+  // --- estado ---
+  const KEY = 'plano3d-colores-v1';
+  let state = {}; try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const val = id => state[id] ?? byId[id].def;
+  const hx = n => '#' + n.toString(16).padStart(6, '0');
+  const nameOf = c => (c.sw.find(s => s.h === val(c.id)) || { n: 'Personalizado' }).n;
+  // --- UI ---
+  const pane = document.createElement('div'); pane.className = 'pane'; pane.dataset.p = 'col'; pane.hidden = true; pane.id = 'paneCol';
+  document.querySelector('#side .pane[data-p="esp"]').after(pane);
+  function render() {
+    const secs = [...new Set(CATS.map(c => c.sec))];
+    pane.innerHTML = `<div class="grp"><div class="gt">Estilos rápidos</div><div class="styles">${STYLES.map((s, i) => {
+        const v = k => s.v[k] ?? byId[k].def;
+        return `<button class="sty" data-s="${i}"><span class="strip">${['madera', 'frentes', 'meson', 'piso', 'sofa'].map(k => `<i style="background:${hx(v(k))}"></i>`).join('')}</span>${s.n}</button>`; }).join('')}</div></div>` +
+      secs.map(sec => `<div class="grp"><div class="gt">${sec}</div>${CATS.filter(c => c.sec === sec).map(c => `
+        <div class="cr" data-c="${c.id}"><div class="ch"><span class="cn">${c.n}</span><span class="cv"></span></div>
+          <div class="sws" role="radiogroup" aria-label="${c.n}">${c.sw.map(s => `<button class="swb" role="radio" data-h="${s.h}" title="${s.n}" aria-label="${s.n}" style="--c:${hx(s.h)}"></button>`).join('')}
+            <label class="swb swc" title="Color personalizado"><input type="color" aria-label="Color personalizado para ${c.n}"></label></div></div>`).join('')}</div>`).join('') +
+      `<div class="grp colft"><button class="reset">Restablecer colores</button><div class="hint">Los cambios se guardan en este navegador.</div></div>`;
+    refresh();
+  }
+  function refresh() {
+    pane.querySelectorAll('.cr').forEach(r => { const c = byId[r.dataset.c], v = val(c.id), known = c.sw.some(s => s.h === v);
+      r.querySelector('.cv').textContent = nameOf(c);
+      r.querySelectorAll('.swb[data-h]').forEach(b => { const on = +b.dataset.h === v; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+      const cu = r.querySelector('.swc'); cu.classList.toggle('on', !known); cu.style.setProperty('--c', known ? '' : hx(v)); cu.querySelector('input').value = hx(v); });
+    pane.querySelectorAll('.sty').forEach(b => { const s = STYLES[+b.dataset.s];
+      b.classList.toggle('on', CATS.every(c => (s.v[c.id] ?? c.def) === val(c.id))); });
+  }
+  function set(id, hex, persist = true) { const c = byId[id]; if (hex === c.def) delete state[id]; else state[id] = hex; paint(c, hex); if (persist) save(); }
+  pane.addEventListener('click', e => {
+    const b = e.target.closest('.swb[data-h]'); if (b) { set(b.closest('.cr').dataset.c, +b.dataset.h); refresh(); return; }
+    const s = e.target.closest('.sty'); if (s) { const v = STYLES[+s.dataset.s].v; CATS.forEach(c => set(c.id, v[c.id] ?? c.def, false)); save(); refresh(); return; }
+    if (e.target.closest('.reset')) { CATS.forEach(c => set(c.id, c.def, false)); state = {}; save(); refresh(); }
+  });
+  pane.addEventListener('input', e => { if (e.target.type !== 'color') return; set(e.target.closest('.cr').dataset.c, parseInt(e.target.value.slice(1), 16)); refresh(); });
+  render();
+  CATS.forEach(c => { if (state[c.id] != null) paint(c, state[c.id]); });
+  window.__colors = { CATS, set, val };
+})();
 // la propuesta 1 (interna 2) es la vista inicial
 setProp(2);
 </script>
