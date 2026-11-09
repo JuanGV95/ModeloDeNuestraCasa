@@ -1338,11 +1338,9 @@ addEventListener('resize', () => {
     { id: 'madera', sec: 'Muebles', n: 'Madera', d: 'Gatero, mesones, cabeceros, estudio', def: 0xc9a27a,
       sw: [SW('Roble natural', 0xc9a27a), SW('Roble claro', 0xdcc3a0), SW('Fresno blanqueado', 0xe6d8c3), SW('Nogal', 0x7a4e2d), SW('Wengué', 0x4a3426), SW('Ceniza', 0xa39a8f)],
       hex: [0xd8b07a, 0xc49a63, 0xa8754a, 0xb08560, 0xc9a27a, 0xd8b991, 0x9b6f4a, 0x7a4a2e, 0x6a3f27, 0x7a4e2d, 0x6a4226] },
-    { id: 'frentes', sec: 'Muebles', n: 'Gabinetes y frentes', d: 'Cocina, clósets y alacenas', def: 0xf2efe9,
+    { id: 'frentes', sec: 'Muebles', n: 'Gabinetes y frentes', d: 'Cocina, clósets, alacenas y estudio', def: 0xf2efe9,
       sw: [SW('Blanco hueso', 0xf2efe9), SW('Blanco puro', 0xf8f8f6), SW('Greige', 0xd9d2c5), SW('Salvia', 0x9cae98), SW('Azul noche', 0x2f3e52), SW('Grafito', 0x45484d)],
-      hex: [0xf4f1ea, 0xefe9df, 0xf4f2ee, 0xf2efe9, 0xe4dfd6, 0xf4f3f0, 0xd9d3c8, 0xc9c2b6], mats: [km.cab, km.upper, gm.white, RM.closet, RM.seam, AM.white, AM.seam, NM.cab, NM.cabD, LW.cab] },
-    { id: 'estudio', sec: 'Muebles', n: 'Gabinetes del estudio', d: 'Escritorios, repisa de cubos y gabinetes altos', def: 0x3f4b5c,
-      sw: [SW('Azul grafito', 0x3f4b5c), SW('Blanco hueso', 0xf2efe9), SW('Greige', 0xd9d2c5), SW('Salvia', 0x9cae98), SW('Negro', 0x26282b), SW('Roble', 0xc9a27a)], hex: [0x3f4b5c, 0x2f3947] },
+      hex: [0xf4f1ea, 0xefe9df, 0xf4f2ee, 0xf2efe9, 0xe4dfd6, 0xf4f3f0, 0xd9d3c8, 0xc9c2b6, 0x3f4b5c, 0x2f3947], ref: { [0x3f4b5c]: 0x3f4b5c, [0x2f3947]: 0x3f4b5c }, mats: [km.cab, km.upper, gm.white, RM.closet, RM.seam, AM.white, AM.seam, NM.cab, NM.cabD, LW.cab] },
     { id: 'meson', sec: 'Muebles', n: 'Mesón (granito)', d: 'Cocina, península y lavandería', def: 0x3a3f45, flat: 1,
       sw: [SW('Grafito', 0x3a3f45), SW('Negro', 0x1f2124), SW('Cuarzo blanco', 0xebe8e2), SW('Mármol gris', 0xc9c9c6), SW('Concreto', 0x8b8680), SW('Madera', 0xb08560)], mats: [km.top] },
     { id: 'tiradores', sec: 'Muebles', n: 'Tiradores', d: 'Manijas y perfiles', def: 0x9aa3ab, flat: 1,
@@ -1381,12 +1379,13 @@ addEventListener('resize', () => {
       const h = m.color.getHex(), c = CATS.find(c => c.hex && c.hex.includes(h)); if (c) owner.set(m, c); }); });
   const T = { h: 0, s: 0, l: 0 };
   CATS.forEach(c => { c.list = []; const b = new THREE.Color(c.def).getHSL({ h: 0, s: 0, l: 0 }); c.b = b; });
-  owner.forEach((c, m) => { const o = m.color.getHSL({ h: 0, s: 0, l: 0 }); c.list.push({ m, orig: m.color.getHex(), o }); });
+  owner.forEach((c, m) => { const h = m.color.getHex(), o = m.color.getHSL({ h: 0, s: 0, l: 0 }), r = c.ref?.[h];
+    c.list.push({ m, orig: h, o, b: r != null ? new THREE.Color(r).getHSL({ h: 0, s: 0, l: 0 }) : null }); });
   const roomOf = new Map(rooms.map(rm => [rm.mesh.material, rm]));
   const cl = v => Math.min(.97, Math.max(.03, v));
   function paint(c, hex) {
-    const nb = new THREE.Color(hex).getHSL({ h: 0, s: 0, l: 0 }), b = c.b;
-    for (const e of c.list) {
+    const nb = new THREE.Color(hex).getHSL({ h: 0, s: 0, l: 0 });
+    for (const e of c.list) { const b = e.b || c.b;
       if (hex === c.def) e.m.color.setHex(e.orig);
       else if (c.flat) e.m.color.setHex(hex);
       else { const { o } = e;
