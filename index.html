@@ -1164,6 +1164,8 @@ pad.querySelectorAll('button').forEach(b => {
 // Controles laterales
 hgt.oninput = () => buildWalls(+hgt.value);
 document.getElementById('lbls').onchange = e => rooms.forEach(r => r.el.style.visibility = e.target.checked ? '' : 'hidden');
+// en celular los nombres arrancan ocultos (se pueden mostrar en Mostrar → Nombres)
+if (matchMedia('(max-width:760px)').matches) { const l = document.getElementById('lbls'); l.checked = false; l.dispatchEvent(new Event('change')); }
 document.getElementById('furn').onchange = e => { furn.visible = e.target.checked; cotas.slice(kc0, gc0).forEach(c => { c.hide = !e.target.checked; c.ln.visible = e.target.checked; }); };
 document.getElementById('cat').onchange = e => { cat.visible = e.target.checked; cotas.slice(gc0, sc0).forEach(c => { c.hide = !e.target.checked; c.ln.visible = e.target.checked; }); };
 document.getElementById('study').onchange = e => { study.visible = e.target.checked && PROP === 1; cotas.slice(sc0, fc0).forEach(c => { c.hide = !e.target.checked; c.ln.visible = e.target.checked; }); };
