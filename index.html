@@ -363,6 +363,22 @@ const walls = [
   [580,305,590,380,'P'],[580,380,590,518,'W'],[580,518,590,586,'P'],[580,586,590,658,'W'],
 ];
 const wallGroup = new THREE.Group(); scene.add(wallGroup);
+// guardaescoba empotrado: perfil de aluminio de 7 cm al ras del muro (se dibuja 2 mm afuera para que se vea)
+const skirtMat = new THREE.MeshStandardMaterial({ color: 0xb8bec4, roughness: .35, metalness: .55 });
+const SKIRT_H = 0.07, SKIRT_T = 0.2;
+function skirtFor(x1, y1, x2, y2) {
+  const dry = rooms.filter(r => r.c !== TILE2);                       // en los baños va el enchape hasta el piso
+  const horiz = (x2 - x1) >= (y2 - y1);
+  for (const [face, dir] of horiz ? [[y1, -1], [y2, 1]] : [[x1, -1], [x2, 1]]) {
+    for (const rm of dry) { const [rx1, ry1, rx2, ry2] = rm.r;
+      if (horiz) { const touches = dir < 0 ? Math.abs(ry2 - face) < 3 : Math.abs(ry1 - face) < 3; if (!touches) continue;
+        const a = Math.max(x1, rx1), b = Math.min(x2, rx2); if (b - a < 2) continue;
+        const yy = dir < 0 ? face - SKIRT_T : face; box(a, yy, b, yy + SKIRT_T, 0.004, SKIRT_H, skirtMat, false); }
+      else { const touches = dir < 0 ? Math.abs(rx2 - face) < 3 : Math.abs(rx1 - face) < 3; if (!touches) continue;
+        const a = Math.max(y1, ry1), b = Math.min(y2, ry2); if (b - a < 2) continue;
+        const xx = dir < 0 ? face - SKIRT_T : face; box(xx, a, xx + SKIRT_T, b, 0.004, SKIRT_H, skirtMat, false); } }
+  }
+}
 const wallTileMat = new THREE.MeshStandardMaterial({ color: 0xf3f3f1, roughness: .35, map: tileTex });
 // enchape de muros: baños (paredes completas) y pared del mesón de la cocina (cara interior, 6 mm)
 const CLAD = [
@@ -399,6 +415,7 @@ function buildWalls(H) {
   const cap = (x1, y1, x2, y2) => box(x1, y1, x2, y2, H, H + 0.02, capMat, false);
   for (const [x1, y1, x2, y2, t, o = {}] of walls) {
     if (o.p && o.p !== PROP) continue;
+    if (t === 'W' || t === 'V' || t === 'R') skirtFor(x1, y1, x2, y2);
     if (t === 'W') { box(x1, y1, x2, y2, 0, H, wallMat); cap(x1, y1, x2, y2); }
     else if (t === 'V') {
       const sill = Math.min(o.sill ?? 0.9, H), head = Math.min(o.head ?? 2.1, H);
@@ -1412,6 +1429,8 @@ addEventListener('resize', () => {
       sw: [SW('Blanco', TILE2), SW('Gris perla', 0xd3d9de), SW('Arena', 0xddd3c4), SW('Gris medio', 0xa9adb1), SW('Grafito', 0x5c6166), SW('Terracota', 0xc47a5a)], hex: [TILE2] },
     { id: 'paredes', sec: 'Superficies', n: 'Paredes', d: 'Todos los muros', def: 0xf7f7f5, flat: 1,
       sw: [SW('Blanco', 0xf7f7f5), SW('Hueso', 0xefe9df), SW('Arena', 0xe6dccb), SW('Gris niebla', 0xdfe2e4), SW('Salvia', 0xc8d1c2), SW('Terracota suave', 0xe2b9a1)], mats: [wallMat] },
+    { id: 'guardaescoba', sec: 'Superficies', n: 'Guardaescoba empotrado', d: 'Perfil de 7 cm al ras del muro', def: 0xb8bec4, flat: 1,
+      sw: [SW('Aluminio', 0xb8bec4), SW('Negro mate', 0x2b2d30), SW('Blanco', 0xf4f4f2), SW('Champaña', 0xc9b48f), SW('Grafito', 0x5c6166), SW('Madera', 0xc9a27a)], mats: [skirtMat] },
     { id: 'puertas', sec: 'Superficies', n: 'Puertas', d: 'Hojas y marcos interiores', def: 0xf4f2ee,
       sw: [SW('Blanco', 0xf4f2ee), SW('Hueso', 0xece5d8), SW('Roble', 0xc9a27a), SW('Gris claro', 0xd5d8dc), SW('Negro', 0x2b2f33), SW('Azul noche', 0x2f3e52)], mats: [DM.leaf, slideDoor.material, doorFrameMat] },
     { id: 'sofa', sec: 'Textiles', n: 'Sofá y puff', d: 'Tapizado', def: 0x7f8f98, keepAll: 1,
