@@ -1335,7 +1335,7 @@ function setProp(n) {
     sl.note = sl.note1.replace(/ Sofá J&D de 1\.40.*$/, '') + ' Sofá J&D convertible de 2.00 × 0.95 (3 puestos) mirando al TV; en modo comedor el panel se vuelve una mesa de 2.00 × 0.72. Puff rectangular de 0.80 × 0.45: en modo sala va en la esquina junto a la cocina (o frente al sofá cuando está el árbol) y en modo comedor pasa a la mesa. Se separa de la alcoba 2 con 3 hojas de listones telescópicas.';
     es.n = 'Alcoba 2'; es.note = 'Alcoba de huéspedes al fondo de la sala, con cama semidoble abatible horizontal con escritorio de 1.88, gabinetes altos, repisas abiertas. Se cierra hacia la sala con 3 hojas de listones telescópicas y hacia el pasillo con muro (espejo de cuerpo entero del lado del pasillo).'; }
   else if (n === 3) { a2.n = 'Estudio'; a2.note = 'Estudio para dos, sin clóset: escritorio 2.85 × 0.65 contra el muro oriente, península 1.08 × 0.45 con las torres en fila, mueble alto de 1.60 al techo en 3 módulos iguales.';
-    sl.note = 'Comedor: mesa 1.10 × 0.76 con banca 1.00 × 0.40 contra el muro y 2 sillas tapizadas; espejo horizontal de 1.60 × 0.70 sobre la banca para dar amplitud. La esquina del balcón queda libre para el árbol de Navidad (Ø1.20). Panel japonés de 4 hojas de muro a muro (2.48) que tapa todo el balcón y se apila hacia la izquierda, contra el muro de la cocina.';
+    sl.note = 'Comedor: mesa 1.10 × 0.76 contra el muro bajo un espejo horizontal de 1.60 × 0.70 (centrado en el muro), banca 1.00 × 0.40 guardada debajo y una silla tapizada en cada cabecera. En Navidad el comedor se corre hacia el divisor y deja la esquina del balcón para el árbol (Ø1.20). Panel japonés de 4 hojas de muro a muro (2.48) que tapa todo el balcón y se apila hacia la izquierda, contra el muro de la cocina.';
     es.n = 'Zona TV'; es.note = 'Zona de entretenimiento detrás del divisor de listones (3 hojas de listones telescópicas como en la propuesta 1, que se apilan hacia el balcón): sofá cama 1.90 × 0.90 con baúl que abre a semidoble 1.25 × 1.90. Mueble TV 55" + gatos: mesón flotante a 72 con casita en la punta, poste de sisal hasta la repisa de 1.90 con LED, listones al borde con paso detrás hacia la torre al techo con huecos en la esquina, cajonera de 4 cajones y comederos con fuente. Arranca a 15 cm del muro de la ventana para no chocar con la persiana.'; }
   else { a2.n = 'Alcoba 2'; a2.note = a2.note1; sl.note = sl.note1; es.n = 'Estudio'; es.note = es.note1; }
   for (const r of [a2, es]) { r.el.innerHTML = `${r.n}<small>${r.a.toFixed(2)} m²</small>`; r.row.childNodes[1].textContent = r.n; } sl.el.innerHTML = `${sl.n}<small>${sl.a.toFixed(2)} m²</small>`;
@@ -1434,15 +1434,23 @@ p3Door.userData.act = () => { p3DoorK = p3DoorK ? 0 : 1; window.__p3doorK = p3Do
 p3b(265, 295, 305, 299, 236, 240, sm.track); for (let x = 266; x + 4 <= 305; x += 7) p3b(x, 295, x + 4, 299, 0, 236, sm.slat);
 // ---------- Propuesta 2 · comedor con espejo ----------
 { const mir = new THREE.MeshStandardMaterial({ color: 0xdbe9ef, roughness: .12, metalness: .25, emissive: 0x9fb8c4, emissiveIntensity: .25 });
-  p3b(10, 130, 11.5, 290, 100, 170, mir); p3b(10, 128, 12, 130, 98, 172, gm.wood); p3b(10, 290, 12, 292, 98, 172, gm.wood); p3b(10, 128, 12, 292, 98, 100, gm.wood); p3b(10, 128, 12, 292, 170, 172, gm.wood);
-  // mesa 110 × 76 (tablero blanco, patas de madera)
-  p3b(64, 155, 140, 265, 72, 76, gm.white);
-  for (const [x, y] of [[68, 159], [134, 159], [68, 259], [134, 259]]) p3b(x, y, x + 4, y + 4, 0, 72, gm.wood);
-  // banca 100 × 40 contra el espejo
-  p3b(14, 160, 54, 260, 33, 47, P3M.grey); for (const [x, y] of [[16, 162], [48, 162], [16, 254], [48, 254]]) p3b(x, y, x + 4, y + 4, 0, 33, gm.wood);
-  // 2 sillas tapizadas mirando a la mesa
-  for (const y of [165, 215]) { p3b(146, y, 186, y + 45, 42, 48, P3M.sofa); p3b(182, y + 2, 188, y + 43, 48, 93, P3M.sofa);
-    for (const [x, yy] of [[148, y + 2], [180, y + 2], [148, y + 39], [180, y + 39]]) p3b(x, yy, x + 4, yy + 4, 0, 42, gm.wood); } }
+  p3b(10, 72.5, 11.5, 232.5, 100, 170, mir); p3b(10, 70.5, 12, 72.5, 98, 172, gm.wood); p3b(10, 232.5, 12, 234.5, 98, 172, gm.wood); p3b(10, 70.5, 12, 234.5, 98, 100, gm.wood); p3b(10, 70.5, 12, 234.5, 170, 172, gm.wood);
+  // muebles del comedor como grupos con pivote al centro (cm relativos), para moverlos entre las dos disposiciones
+  const piece = (build) => { const g = new THREE.Group(); p3.add(g); const b = (x1, y1, x2, y2, z1, z2, m) => { const me = new THREE.Mesh(new THREE.BoxGeometry((x2 - x1) / 100, (z2 - z1) / 100, (y2 - y1) / 100), m); me.position.set((x1 + x2) / 200, (z1 + z2) / 200, (y1 + y2) / 200); g.add(me); }; build(b); return g; };
+  // mesa 110 × 76: tablero blanco, patas de madera en las esquinas
+  const dTable = piece(b => { b(-38, -55, 38, 55, 72, 76, gm.white); for (const [x, y] of [[-38, -55], [34, -55], [-38, 51], [34, 51]]) b(x, y, x + 4, y + 4, 0, 72, gm.wood); });
+  // banca 100 × 40 (cabe entre las patas: quedan 102 libres)
+  const dBench = piece(b => { b(-20, -50, 20, 50, 33, 47, P3M.grey); for (const [x, y] of [[-18, -48], [14, -48], [-18, 44], [14, 44]]) b(x, y, x + 4, y + 4, 0, 33, gm.wood); });
+  // silla tapizada 40 × 45: mira hacia −x (espaldar en +x)
+  const chair = () => piece(b => { b(-22, -20, 18, 20, 42, 48, P3M.sofa); b(16, -18, 22, 18, 48, 93, P3M.sofa); for (const [x, y] of [[-20, -18], [12, -18], [-20, 14], [12, 14]]) b(x, y, x + 4, y + 4, 0, 42, gm.wood); });
+  const dCh1 = chair(), dCh2 = chair();
+  // disposiciones [x, y (cm), giro]: normal = mesa contra el muro bajo el espejo, banca debajo, sillas en las cabeceras
+  //                                  navidad = como estaba (deja libre la esquina del balcón para el árbol)
+  const LAY = { wall: [[48, 152.5, 0], [62, 152.5, 0], [48, 77, Math.PI / 2], [48, 228, -Math.PI / 2]],
+                xmas: [[102, 210, 0], [34, 210, 0], [166, 187.5, 0], [166, 237.5, 0]] };
+  const DP = [dTable, dBench, dCh1, dCh2];
+  window.__dine3 = { DP, LAY, t: 0 };
+  DP.forEach((g, k) => { const [x, y, r] = LAY.wall[k]; g.position.set(X(x), 0, Z(y)); g.rotation.y = r; }); }
 window.__p3 = { p3, p3SofaC, p3SofaO, p3Door };
 // ---------- Bucle ----------
 const clock = new THREE.Clock(), v = new THREE.Vector3();
@@ -1450,7 +1458,9 @@ const bounds = { x1: X(20), x2: X(840), z1: Z(20), z2: Z(648) };
 function loop() {
   const dt = Math.min(clock.getDelta(), 0.05);
   xmasTick(performance.now() / 1000); curtUpdate(dt);
-  p3DoorT += (p3DoorK - p3DoorT) * Math.min(1, dt * 4); p3Leaves.forEach((g, i) => g.position.z = -0.94 * i * p3DoorT);   // abiertas: se apilan hacia el balcón
+  p3DoorT += (p3DoorK - p3DoorT) * Math.min(1, dt * 4); p3Leaves.forEach((g, i) => g.position.z = -0.94 * i * p3DoorT);
+  { const D = window.__dine3, tgt = xmas.visible ? 1 : 0; if (D && Math.abs(D.t - tgt) > 0.001) { D.t += (tgt - D.t) * Math.min(1, dt * 4); if (Math.abs(D.t - tgt) < 0.002) D.t = tgt;
+      D.DP.forEach((g, k) => { const a = D.LAY.wall[k], b = D.LAY.xmas[k], m = (u, v) => u + (v - u) * D.t; g.position.set(X(m(a[0], b[0])), 0, Z(m(a[1], b[1]))); g.rotation.y = m(a[2], b[2]); }); } }   // abiertas: se apilan hacia el balcón
   if (tw) {
     const k = Math.min(1, (performance.now() - tw.s) / tw.dur), e = 1 - Math.pow(1 - k, 3);
     controls.target.lerpVectors(tw.t0, tw.t1, e); camera.position.lerpVectors(tw.p0, tw.p1, e);
