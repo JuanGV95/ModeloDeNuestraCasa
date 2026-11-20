@@ -1372,51 +1372,56 @@ const p3hole = (x, cy, cz, w, h) => { const m = new THREE.Mesh(new THREE.Cylinde
 const P3M = { grey: GM(0xd9dcdf), dome: new THREE.MeshStandardMaterial({ color: 0xe8f3f8, roughness: .05, metalness: .1, transparent: true, opacity: .35, side: THREE.DoubleSide }),
   sofa: new THREE.MeshStandardMaterial({ color: 0x2f4f7a, roughness: .9 }), sofaD: new THREE.MeshStandardMaterial({ color: 0x27436a, roughness: .9 }), legs: GM(0xc9a27a), water: GM(0xf4f4f2) };
 // mueble TV + gatos según el boceto de Angie (muro del TV, 35 de fondo; arranca a 15 cm del muro de la ventana)
-const P3TV = { g55: null, g65: null }; const p3MStart = p3.children.length;
-{ const F = 459, B = 494, Y0 = 25;
-  // mesón flotante a 72, punta redonda del lado de la ventana, hasta el muro del hall
-  p3b(F, Y0 + 17.5, B, 295, 68, 72, gm.wood); p3c(F + 17.5, Y0 + 17.5, 17.5, 68, 72, gm.wood);
-  // casita colgante bajo la punta (hueco hacia el cuarto)
-  p3b(F, Y0 + 17.5, B, 72, 26, 68, gm.white); p3c(F + 17.5, Y0 + 17.5, 17.5, 26, 68, gm.white); p3hole(F - 0.2, 52, 46, 22, 24);
-  // comederos + fuente en el centro
-  p3b(462, 95, 490, 135, 0, 10, gm.woodD); for (const y of [105, 125]) p3c(476, y, 7, 10, 13, gm.bowl); p3c(476, 150, 9, 0, 22, P3M.water);
-  // cajonera flotante de 2 cajones bajo el mesón, hasta la torre
-  p3b(F + 1, 170, B, 295, 15, 66, gm.white); p3b(F + 0.6, 170.5, F + 1, 294.5, 40.3, 40.7, gm.panel); p3b(F + 0.6, 232.3, F + 1, 232.7, 15.5, 65.5, gm.panel);
-  for (const z of [53, 27]) for (const y of [190, 252]) p3b(F + 0.2, y, F + 0.6, y + 24, z, z + 1.5, gm.handle);
-  // poste de sisal del mesón a la repisa superior
-  p3c(476, 58, 6, 72, 190, gm.sisal);
-  // repisa superior a 1.90 con punta redonda del lado de la ventana, hasta la torre, con LED
-  p3b(F, Y0 + 17.5, B, 250, 190, 194, gm.wood); p3c(F + 17.5, Y0 + 17.5, 17.5, 190, 194, gm.wood); p3b(F + 4, Y0 + 18, F + 6, 250, 189.4, 190, gm.led);
-  // listones verticales sobre la repisa junto a la torre
-  // listones verticales en el borde de afuera de la repisa (como baranda): por detrás queda un pasillo de 32 cm hacia la salida ovalada de la torre
-  for (let y = 202; y < 250; y += 6) p3b(F, y, F + 3, y + 3, 194, 240, gm.woodD);
-  // torre del mesón al techo con 4 huecos redondos
-  // torre hueca con los huecos cortados en la esquina (mitad al frente, mitad hacia el TV), igual que la propuesta 1
+const P3TV = { g55: null, g65: null };
+// mueble TV + gatos; d = cm que se acorta del lado de la torre (0 en la zona TV, 25 en la sala de la propuesta 1)
+function buildMueble(par, d) {
+  const F = 459, B = 494, Y0 = 25, E = 295 - d, dt = d ? 12 : 0, fy = d ? 135 : 150;
+  const b = (x1, y1, x2, y2, z1, z2, m) => sb(x1, y1, x2, y2, z1, z2, m, par);
+  const c = (cx, cy, r, z1, z2, m) => { const me = new THREE.Mesh(new THREE.CylinderGeometry(r / 100, r / 100, (z2 - z1) / 100, 40), m); me.position.set(X(cx), (z1 + z2) / 200, Z(cy)); par.add(me); return me; };
+  const hole = (x, cy, cz, w, h) => { const me = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.012, 40), gm.hole); me.rotation.z = Math.PI / 2; me.scale.set(h / 100, 1, w / 100); me.position.set(X(x), cz / 100, Z(cy)); par.add(me); };
+  // mesón flotante a 72, punta redonda del lado de la ventana
+  b(F, Y0 + 17.5, B, E, 68, 72, gm.wood); c(F + 17.5, Y0 + 17.5, 17.5, 68, 72, gm.wood);
+  // casita colgante bajo la punta
+  b(F, Y0 + 17.5, B, 72, 26, 68, gm.white); c(F + 17.5, Y0 + 17.5, 17.5, 26, 68, gm.white); hole(F - 0.2, 52, 46, 22, 24);
+  // comederos + fuente
+  b(462, 95 - d * .4, 490, 135 - d * .4, 0, 10, gm.woodD); for (const y of [105, 125]) c(476, y - d * .4, 7, 10, 13, gm.bowl); c(476, fy, 9, 0, 22, P3M.water);
+  // cajonera flotante de 2 × 2 cajones hasta la torre
+  const c1 = 170 - d, cm = (c1 + E) / 2, cw = (E - c1) / 2;
+  b(F + 1, c1, B, E, 15, 66, gm.white); b(F + 0.6, c1 + .5, F + 1, E - .5, 40.3, 40.7, gm.panel); b(F + 0.6, cm - .2, F + 1, cm + .2, 15.5, 65.5, gm.panel);
+  for (const z of [53, 27]) for (const y of [c1 + cw / 2 - 12, cm + cw / 2 - 12]) b(F + 0.2, y, F + 0.6, y + 24, z, z + 1.5, gm.handle);
+  // sisal del mesón a la repisa
+  c(476, 58, 6, 72, 190, gm.sisal);
+  // repisa a 1.90 con LED hasta la torre
+  const T = 250 - d;
+  b(F, Y0 + 17.5, B, T, 190, 194, gm.wood); c(F + 17.5, Y0 + 17.5, 17.5, 190, 194, gm.wood); b(F + 4, Y0 + 18, F + 6, T, 189.4, 190, gm.led);
+  // listones al borde de afuera de la repisa: por detrás pasan los gatos hacia la torre
+  for (let y = T - 48; y < T; y += 6) b(F, y, F + 3, y + 3, 194, 240, gm.woodD);
+  // torre hueca con los huecos cortados en la esquina (mitad al frente, mitad hacia el TV)
   const DK = new THREE.MeshStandardMaterial({ color: 0x1d1a17, roughness: 1 });
-  p3b(F + 2, 252, B - 2, 293, 72, 240, DK);                       // interior oscuro
-  p3b(B - 2, 250, B, 295, 72, 240, gm.wood); p3b(F, 293, B, 295, 72, 240, gm.wood);   // espalda y costado del hall
+  b(F + 2, T + 2, B - 2, E - 2, 72, 240, DK); b(B - 2, T, B, E, 72, 240, gm.wood); b(F, E - 2, B, E, 72, 240, gm.wood);
   { const HOLES = [100, 150], H = 18, D = 22, Z1 = 72, Z2 = 240;
     const dAt = (z, zc) => { const t = Math.min(1, Math.abs(z - zc) / H); return D * Math.pow(1 - Math.pow(t, 4), 0.25); };
     const profile = (edge, inward, other) => { const sh = new THREE.Shape(); sh.moveTo(edge, Z1);
       for (const zc of HOLES) for (let k = 0; k <= 36; k++) { const z = zc - H + k; sh.lineTo(edge + inward * dAt(z, zc), z); }
       sh.lineTo(edge, Z2); sh.lineTo(other, Z2); sh.lineTo(other, Z1); sh.lineTo(edge, Z1); return sh; };
     const ext = sh => new THREE.ExtrudeGeometry(sh, { depth: 2, bevelEnabled: false, curveSegments: 24 });
-    // frente (x 459–461): u = −y, esquina en u = −250, cuerpo hacia u < −250; hueco redondo arriba
-    const fs = profile(-250, -1, -295); const r = new THREE.Path(); r.absarc(-272.5, 216, 12, 0, Math.PI * 2, true); fs.holes.push(r);
-    const front = new THREE.Mesh(ext(fs), gm.wood); front.scale.setScalar(0.01); front.rotation.y = Math.PI / 2; front.position.set(X(F), 0, Z(0)); p3.add(front);
-    // costado hacia el TV (y 250–252): s = x, esquina en s = 459, cuerpo hacia s > 459; salida ovalada a la repisa
+    const fs = profile(-T, -1, -E); const r = new THREE.Path(); r.absarc(-(T + E) / 2, 216, 12, 0, Math.PI * 2, true); fs.holes.push(r);
+    const front = new THREE.Mesh(ext(fs), gm.wood); front.scale.setScalar(0.01); front.rotation.y = Math.PI / 2; front.position.set(X(F), 0, Z(0)); par.add(front);
     const ss = profile(F, 1, B); const o = new THREE.Path(); o.absellipse(477, 210, 9, 12, 0, Math.PI * 2, true); ss.holes.push(o);
-    const side = new THREE.Mesh(ext(ss), gm.wood); side.scale.setScalar(0.01); side.position.set(X(0), 0, Z(250)); p3.add(side); }
-  // panel gris + TV (55" y 65", se alterna)
-  p3b(B - 2, 78, B, 232, 80, 182, P3M.grey);
-  P3TV.g55 = p3b(B - 6, 94, B - 2, 216, 92, 163, gm.tv);       // 122 × 71
-  P3TV.g65 = p3b(B - 6, 83, B - 2, 227, 88, 171, gm.tv);       // 144 × 83
-  P3TV.g65.visible = false;
+    const side = new THREE.Mesh(ext(ss), gm.wood); side.scale.setScalar(0.01); side.position.set(X(0), 0, Z(T)); par.add(side); }
+  // panel gris + TV 55" (el de 65" queda guardado para comparar)
+  b(B - 2, 78 - dt, B, 232 - dt, 80, 182, P3M.grey);
+  const t55 = b(B - 6, 94 - dt, B - 2, 216 - dt, 92, 163, gm.tv), t65 = b(B - 6, 83 - dt, B - 2, 227 - dt, 88, 171, gm.tv); t65.visible = false;
+  return { t55, t65 };
 }
-// el mueble queda en su propio grupo y se copia en espejo al muro de la sala de la propuesta 1 (mismo largo y misma distancia a la ventana)
-const p3Mueble = new THREE.Group(); p3.add(p3Mueble); p3.children.slice(p3MStart, p3.children.length - 1).forEach(c => p3Mueble.add(c));
+const p3Mueble = new THREE.Group(); p3.add(p3Mueble);
+{ const t = buildMueble(p3Mueble, 0); P3TV.g55 = t.t55; P3TV.g65 = t.t65; }
+// propuesta 1: el mismo mueble en espejo en el muro de la sala, 25 cm más corto, y una alacena al techo junto a la cocina
 const gatoNew = new THREE.Group(); scene.add(gatoNew); gatoNew.visible = false;
-{ const m = p3Mueble.clone(true); gatoNew.add(m); gatoNew.scale.x = -1; gatoNew.position.x = 2 * X(252); }   // espejo: el fondo (494) cae en el muro de la sala (10)
+{ const m = new THREE.Group(); buildMueble(m, 25); gatoNew.add(m); m.scale.x = -1; m.position.x = 2 * X(252);   // espejo: el fondo (494) cae en el muro de la sala (10)
+  const a = (x1, y1, x2, y2, z1, z2, mt) => sb(x1, y1, x2, y2, z1, z2, mt, gatoNew);
+  // alacena 49 × 35 de piso a techo entre la torre y la cocina: 2 puertas push (abajo hasta 1.40, arriba hasta el techo)
+  a(10, 271, 45, 320, 0, 240, gm.white); a(45, 271.5, 45.4, 319.5, 139.8, 140.2, gm.panel); a(45, 271, 45.4, 320, 0, 8, gm.panel); }
 let GATO_NEW = true; window.__gatoNew = () => GATO_NEW;
 function applyGato() { const on = PROP === 2; gatoNew.visible = on && GATO_NEW; cat.visible = on ? (!GATO_NEW && document.getElementById('cat').checked) : (PROP !== 3 && document.getElementById('cat').checked);
   if (PROP === 2) xmasPlace(GATO_NEW ? 'B' : 'A'); }
