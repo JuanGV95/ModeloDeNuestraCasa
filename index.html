@@ -733,12 +733,12 @@ for (let z = 98; z <= 110; z += 7.5) lw(346.6, 520, 347, 658, z, z + 0.35, LW.ti
 lw(267, 612, 347, 614, 0, 94, LW.cab);                         // costado entre la lavasecadora y el nicho
 // puerta del nicho (push, sin tirador): de 13 a 93.6, deja 13 cm abajo para que el robot (9.7) entre y salga solo; al tocarla se abre
 const lavDoor = { t: 0, k: 0, pivot: new THREE.Group() };
-{ lavDoor.pivot.position.set(X(267), 0, Z(657.8)); laundry.add(lavDoor.pivot);
-  const d = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.806, 0.436), LW.cab); d.position.set(-0.009, 0.13 + 0.403, -0.218); d.castShadow = true; lavDoor.pivot.add(d);
+{ lavDoor.pivot.position.set(X(267), 0, Z(656)); laundry.add(lavDoor.pivot);
+  const d = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.806, 0.418), LW.cab); d.position.set(-0.009, 0.13 + 0.403, -0.209); d.castShadow = true; lavDoor.pivot.add(d);
   lavDoor.pivot.userData.act = () => { lavDoor.k = lavDoor.k ? 0 : 1; }; }
 lw(285, 618, 340, 654, 76, 94, LW.basin);                      // poceta pando de 18 cm, bajo el mesón
 lw(310, 634, 314, 638, 70, 76, LW.black); lw(310, 634, 347, 638, 68, 72, LW.black);   // sifón y desagüe hacia el muro a 70
-lw(346.4, 640, 347, 646, 27, 33, LW.cab);                      // toma del robot a 30 cm
+lw(346.4, 640, 347, 646, 27, 33, LW.cab); lw(267, 656, 269, 658, 13, 93.6, LW.cab);   // tapajunta junto al muro (bisagra)                      // toma del robot a 30 cm
 { const ST = SM(0xf6f6f4), SV = SM(0xc9ccd0);
   lw(321, 619, 347, 653, 0, 59, ST); lw(320.6, 621, 321, 651, 30, 50, SV);           // torre de la base
   lw(301, 619, 321, 653, 0, 1.5, ST);                                               // rampa
@@ -1204,7 +1204,7 @@ function curtUpdate(dt) {
   for (const b of blinds) { b.t += (b.k - b.t) * Math.min(1, dt * 5); const len = Math.max(0.04, b.L * b.t);
     b.fab.scale.y = len; b.tex.repeat.set(1, len * 100 / 13); b.rail.position.set(b.fab.position.x, b.top - len - 0.015, b.z); }
   JP.t += (JP.k - JP.t) * Math.min(1, dt * 4);
-  lavDoor.t += (lavDoor.k - lavDoor.t) * Math.min(1, dt * 5); lavDoor.pivot.rotation.y = lavDoor.t * 1.75;
+  lavDoor.t += (lavDoor.k - lavDoor.t) * Math.min(1, dt * 5); lavDoor.pivot.rotation.y = lavDoor.t * 1.5;   // abre ~86°, sin atravesar el muro
   JP.leaves.forEach((m, i) => { const xl = JP.closed[i] + (JP.open[i] - JP.closed[i]) * JP.t; m.position.x = X(xl + 26); });
 }
 // botones ocultos para el panel lateral
