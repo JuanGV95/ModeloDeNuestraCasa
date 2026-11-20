@@ -1325,6 +1325,7 @@ function setProp(n) {
   p2.children.forEach(c => c.visible = n === 2 || c === p2.userData.s2); if (n === 2) { p2Table.visible = dining; p2Sofa.visible = !dining; }
   cat.visible = n !== 3 && document.getElementById('cat').checked;
   if (n === 3) xmas.position.set(X(75), 0, Z(85)); else xmasPlace('A');
+  if (typeof applyGato === 'function') applyGato();
   { const P = n === 3; JP.closed = P ? [10, 71, 132, 193] : [55, 99, 143, 187]; JP.open = P ? [10, 10, 10, 10] : [218, 218, 218, 218]; JP.half = P ? 31.5 : 26;
     JP.leaves.forEach(m => m.scale.x = P ? 63 / 52 : 1); const cen = jp.userData.cen; cen.scale.x = P ? 248 / 222 : 1; cen.position.x = X(P ? 134 : 161); }
   { const setR = (rm, r) => { rm.r0 ??= rm.r.slice(); rm.w0 ??= rm.w; rm.r = r; const [x1, y1, x2, y2] = r; rm.w = (x2 - x1) / 100; rm.h = (y2 - y1) / 100; rm.a = rm.w * rm.h; rm.d = `${rm.w.toFixed(2)} × ${rm.h.toFixed(2)}`;
@@ -1371,7 +1372,7 @@ const p3hole = (x, cy, cz, w, h) => { const m = new THREE.Mesh(new THREE.Cylinde
 const P3M = { grey: GM(0xd9dcdf), dome: new THREE.MeshStandardMaterial({ color: 0xe8f3f8, roughness: .05, metalness: .1, transparent: true, opacity: .35, side: THREE.DoubleSide }),
   sofa: new THREE.MeshStandardMaterial({ color: 0x2f4f7a, roughness: .9 }), sofaD: new THREE.MeshStandardMaterial({ color: 0x27436a, roughness: .9 }), legs: GM(0xc9a27a), water: GM(0xf4f4f2) };
 // mueble TV + gatos según el boceto de Angie (muro del TV, 35 de fondo; arranca a 15 cm del muro de la ventana)
-const P3TV = { g55: null, g65: null };
+const P3TV = { g55: null, g65: null }; const p3MStart = p3.children.length;
 { const F = 459, B = 494, Y0 = 25;
   // mesón flotante a 72, punta redonda del lado de la ventana, hasta el muro del hall
   p3b(F, Y0 + 17.5, B, 295, 68, 72, gm.wood); p3c(F + 17.5, Y0 + 17.5, 17.5, 68, 72, gm.wood);
@@ -1412,6 +1413,14 @@ const P3TV = { g55: null, g65: null };
   P3TV.g65 = p3b(B - 6, 83, B - 2, 227, 88, 171, gm.tv);       // 144 × 83
   P3TV.g65.visible = false;
 }
+// el mueble queda en su propio grupo y se copia en espejo al muro de la sala de la propuesta 1 (mismo largo y misma distancia a la ventana)
+const p3Mueble = new THREE.Group(); p3.add(p3Mueble); p3.children.slice(p3MStart, p3.children.length - 1).forEach(c => p3Mueble.add(c));
+const gatoNew = new THREE.Group(); scene.add(gatoNew); gatoNew.visible = false;
+{ const m = p3Mueble.clone(true); gatoNew.add(m); gatoNew.scale.x = -1; gatoNew.position.x = 2 * X(252); }   // espejo: el fondo (494) cae en el muro de la sala (10)
+let GATO_NEW = true; window.__gatoNew = () => GATO_NEW;
+function applyGato() { const on = PROP === 2; gatoNew.visible = on && GATO_NEW; cat.visible = on ? (!GATO_NEW && document.getElementById('cat').checked) : (PROP !== 3 && document.getElementById('cat').checked);
+  if (PROP === 2) xmasPlace(GATO_NEW ? 'B' : 'A'); }
+window.__setGato = v => { GATO_NEW = v; applyGato(); };
 // divisor de listones corrido hacia la sala (x 250 → 262) con puerta corrediza junto al hall
 // igual que la propuesta 1: 3 rieles oscuros en el techo y 3 hojas de listones telescópicas (4 × 4 cada 7 cm)
 for (const x of [250, 255, 260]) p3b(x, 10, x + 5, 295, 236, 240, sm.track);
@@ -1493,7 +1502,7 @@ function loop() {
     if (Math.abs(entryAng - tgt) > 0.05) { entryAng += Math.sign(tgt - entryAng) * Math.min(Math.abs(tgt - entryAng), dt * 110);
       entryPivot.rotation.y = (entryHinge === 'der' ? -1 : 1) * entryAng * Math.PI / 180; } }
   if (Math.abs(puffZ - puffTarget) > 0.001) { puffZ += Math.sign(puffTarget - puffZ) * Math.min(Math.abs(puffTarget - puffZ), dt * 1.5); puff.position.x = puffZ; }
-  { const [cx, cy] = dining ? [95, 112] : (xmas.visible ? [165, 112] : [38, 258]);   // comedor · sala con árbol · sala sin árbol (esquina)
+  { const [cx, cy] = dining ? [95, 112] : (PROP === 2 && GATO_NEW ? (xmas.visible ? [125, 245] : [165, 112]) : (xmas.visible ? [165, 112] : [38, 258]));   // comedor · sala con árbol · sala sin árbol (esquina)
     const tx = X(cx), tz = Z(cy), pp = p2Puff.position; pp.x += (tx - pp.x) * Math.min(1, dt * 5); pp.z += (tz - pp.z) * Math.min(1, dt * 5); }
   if (Math.abs(divState - divTarget) > 0.001) {
     divState += Math.sign(divTarget - divState) * Math.min(Math.abs(divTarget - divState), dt * 1.2);
@@ -1643,7 +1652,7 @@ addEventListener('resize', () => {
   window.__colors = { CATS, set, val, owner };
 })();
 // ---------- Solo paredes: oculta todos los muebles y deja la arquitectura (muros, pisos, puertas, enchapes) ----------
-{ const G = [furn, cat, study, lounge, laundry, p2, p3, baths, rooms3d, alc2, nicho, xmas, curt]; let saved = null;
+{ const G = [furn, cat, gatoNew, study, lounge, laundry, p2, p3, baths, rooms3d, alc2, nicho, xmas, curt]; let saved = null;
   const chk = document.getElementById('wallsOnly'), ver = document.getElementById('chipsVer');
   chk.addEventListener('change', () => {
     if (chk.checked && !saved) { saved = G.map(g => g.visible); G.forEach(g => g.visible = false); }
@@ -1705,7 +1714,7 @@ setProp(2);
   const prop = () => +(document.querySelector('#props button.on')?.dataset.p || 1);
   // tabs
   // ficha del espacio: láminas de diseño según el espacio y la propuesta
-  const IMGS = { 'Sala Comedor': { 2: ['gatero-alzado', 'navidad'], 3: [] }, 'Cocina': ['cocina-puente'], 'Nicho areneros': ['areneros'], 'Ropas': ['lavanderia-robot', 'lavanderia'],
+  const IMGS = { 'Sala Comedor': { 2: ['p3-mueble', 'gatero-alzado', 'navidad'], 3: [] }, 'Cocina': ['cocina-puente'], 'Nicho areneros': ['areneros'], 'Ropas': ['lavanderia-robot', 'lavanderia'],
     'Alcoba Principal': ['alcoba-principal'], 'Estudio': { 1: ['estudio', 'estudio-torres'], 2: ['estudio-mueble', 'estudio-torres'], 3: ['estudio-mueble', 'estudio-torres'] },
     'Alcoba 2': { 1: ['cama-auxiliar'], 2: ['p2-rincon'] }, 'Zona TV': ['p3-mueble'] };
   const inf = $('info'), fig = inf.querySelector('.media'), fimg = fig.querySelector('img');
@@ -1750,7 +1759,7 @@ setProp(2);
     dine: () => $('dineBtn').textContent === 'Modo sala', div: () => $('divBtn').textContent === 'Cerrar',
     bed: () => $('mBtn').textContent === 'Cerrar', rc: () => $('rcBtn').textContent === 'Abrir',
     pers: () => !!window.__curt && __curt.blinds.every(b => b.k === 1), jp: () => !!window.__curt && __curt.JP.k === 1,
-    sc: () => !!window.__p3 && __p3.p3SofaO.visible, pd: () => !!window.__p3 && window.__p3doorK === 1,
+    gn: () => !!window.__gatoNew && __gatoNew(), sc: () => !!window.__p3 && __p3.p3SofaO.visible, pd: () => !!window.__p3 && window.__p3doorK === 1,
     xmas: () => $('xmasBtn').textContent === 'Quitar', xloc: () => $('xlocBtn').textContent === 'B', xl: () => $('xlBtn').textContent === 'on' };
   const btn = { xmas: 'xmasBtn', xloc: 'xlocBtn', xl: 'xlBtn', entry: 'eBtn', alc: 'rdBtn', bath: 'bdBtn', dine: 'dineBtn', div: 'divBtn', bed: 'mBtn', rc: 'rcBtn' };
   const seg = (key, a, b, label) => `<div class="it"><span>${label}</span><div class="seg" data-k="${key}"><button data-v="0">${a}</button><button data-v="1">${b}</button></div></div>`;
@@ -1761,7 +1770,7 @@ setProp(2);
       `</div>` +
       `<div class="grp"><div class="gt">Ventanas</div>${seg('pers','Abiertas','Cerradas','Persianas')}${seg('jp','Cerrado','Abierto','Panel japonés del balcón')}</div>` +
       `<div class="grp"><div class="gt">Puertas</div>${seg('entry','Cerrada','Abierta','Entrada')}${seg('alc','Cerradas','Abiertas','Alcobas')}${seg('bath','Cerradas','Abiertas','Baños')}</div>` +
-      (p === 3 ? '' : `<div class="grp"><div class="gt">Sala</div>${seg('dine','Sala','Comedor','Sofá convertible')}</div>`) +
+      (p === 3 ? '' : `<div class="grp"><div class="gt">Sala</div>${seg('gn','Anterior','Nuevo','Mueble TV + gatos')}${seg('dine','Sala','Comedor','Sofá convertible')}</div>`) +
       (p === 1
         ? `<div class="grp"><div class="gt">Estudio</div>${seg('div','Cerrado','Abierto','Divisor de listones')}</div>
            <div class="grp"><div class="gt">Alcoba 2</div>${seg('bed','Escritorio','Cama','Mueble abatible')}</div>`
@@ -1774,6 +1783,7 @@ setProp(2);
   function sync() { document.querySelectorAll('#paneMover .seg').forEach(g => { const on = st[g.dataset.k]() ? '1' : '0'; g.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === on)); }); }
   $('paneMover').addEventListener('click', e => { const b = e.target.closest('.seg button'); if (!b) return; const k = b.closest('.seg').dataset.k;
     if (k === 'pers') __curt.blindsAll(+b.dataset.v); else if (k === 'jp') __curt.JP.k = +b.dataset.v;
+    else if (k === 'gn') __setGato(b.dataset.v === '1');
     else if (k === 'sc') { if (st.sc() !== (b.dataset.v === '1')) __p3.p3SofaC.userData.act(); } else if (k === 'pd') { if (st.pd() !== (b.dataset.v === '1')) __p3.p3Door.userData.act(); }
     else if ((st[k]() ? '1' : '0') !== b.dataset.v) $(btn[k]).click(); sync(); });
   // chips de visibilidad
