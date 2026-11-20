@@ -352,6 +352,8 @@ const walls = [
   [305,295,414,305,'W'],
   // cierre nuevo entre el muro existente y la alcoba 2
   [414,295,494,305,'W'],
+  // propuesta 2: muro de drywall que cierra la zona TV hacia el hall, junto a los listones
+  [265,295,305,305,'W',{p:3}],
   // baño social y ropas
   [232,385,378,395,'W'],[378,385,446,395,'P'],[446,385,460,395,'W'],
   // lavandería abierta a todo lo ancho (se retiran los dos muritos)
@@ -1431,7 +1433,7 @@ const p3Leaves = [0, 1, 2].map(i => { const g = new THREE.Group(); p3Door.add(g)
   for (let y = a; y + 4 <= b; y += 7) sb(x, y, x + 4, y + 4, 0, 236, sm.slat, g); return g; });
 p3Door.userData.act = () => { p3DoorK = p3DoorK ? 0 : 1; window.__p3doorK = p3DoorK; };
 // cierre fijo de listones hacia el hall (el cuarto se cierra solo por la puerta corrediza)
-p3b(265, 295, 305, 299, 236, 240, sm.track); for (let x = 266; x + 4 <= 305; x += 7) p3b(x, 295, x + 4, 299, 0, 236, sm.slat);
+// (el cierre hacia el hall es un muro de drywall: ver walls, solo en la propuesta 2)
 // ---------- Propuesta 2 · comedor con espejo ----------
 { const mir = new THREE.MeshStandardMaterial({ color: 0xdbe9ef, roughness: .12, metalness: .25, emissive: 0x9fb8c4, emissiveIntensity: .25 });
   p3b(10, 72.5, 11.5, 232.5, 100, 170, mir); p3b(10, 70.5, 12, 72.5, 98, 172, gm.wood); p3b(10, 232.5, 12, 234.5, 98, 172, gm.wood); p3b(10, 70.5, 12, 234.5, 98, 100, gm.wood); p3b(10, 70.5, 12, 234.5, 170, 172, gm.wood);
